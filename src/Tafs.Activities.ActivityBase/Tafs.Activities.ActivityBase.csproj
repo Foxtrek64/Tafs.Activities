@@ -1,0 +1,24 @@
+﻿<Project Sdk="Remora.Sdk/2.0.1">
+
+  <PropertyGroup>
+    <LibraryFrameworks>net461</LibraryFrameworks>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <VersionPrefix>2.1.0</VersionPrefix>
+    <Description>Provides extended base types for custom activities.</Description>
+    <PackageReleaseNotes>Re-release using Remora.Sdk.</PackageReleaseNotes>
+    <PackageTags>$(PackageTags);UiPath;Activities;</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net461'">
+    <Reference Include="System.Activities" />
+    <PackageReference Include="PolySharp" Version="1.13.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Nito.AsyncEx.Tasks" Version="5.1.2" />
+    <PackageReference Include="Shouldly" Version="4.1.0" />
+  </ItemGroup>
+
+</Project>

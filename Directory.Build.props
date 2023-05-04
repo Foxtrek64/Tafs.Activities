@@ -1,0 +1,22 @@
+<Project>
+	<PropertyGroup>
+		<LegalAuthor>Devin Duanne</LegalAuthor>
+		<LegalEmail>dduanne@tafs.com</LegalEmail>
+    <Company>TAFS, LLC.</Company>
+    <LegalCopyrightHolder>TAFS, LLC.</LegalCopyrightHolder>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<SolutionDir>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)/))</SolutionDir>
+	</PropertyGroup>
+
+  <PropertyGroup>
+    <RepositoryBranch>main</RepositoryBranch>
+    <RepositoryUrl>https://github.com/TA-RPA/Tafs.Activities</RepositoryUrl>
+
+    <PackageProjectUrl>https://github.com/TA-RPA/Tafs.Activities</PackageProjectUrl>
+    <PackageOutputPath>$(SolutionDir)/nuget</PackageOutputPath>
+    <PackageTags>TAFS;RPA;UiPath</PackageTags>
+  </PropertyGroup>
+
+</Project>

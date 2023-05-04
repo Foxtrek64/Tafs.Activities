@@ -1,0 +1,28 @@
+<Project Sdk="Remora.Sdk/2.0.1">
+
+  <PropertyGroup>
+    <LibraryFrameworks>net461;netstandard2.1;net6.0;net7.0</LibraryFrameworks>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <VersionPrefix>2.1.0</VersionPrefix>
+    <Description>Provides a set of POCOs for use with financial apps.</Description>
+    <PackageReleaseNotes>Re-release as Remora.Sdk.</PackageReleaseNotes>
+    <PackageTags>$(PackageTags);UiPath;Activities;Remora;Result;</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net461'">
+    <PackageReference Include="PolySharp" Version="1.13.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Bcl.HashCode" Version="1.1.1" />
+    <PackageReference Include="Remora.Results" Version="7.2.3" />
+    <PackageReference Include="Remora.Results.Analyzers" Version="1.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Tafs.Activities.Results.Extensions\Tafs.Activities.Results.Extensions.csproj" />
+  </ItemGroup>
+
+</Project>

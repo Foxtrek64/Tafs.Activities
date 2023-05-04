@@ -1,0 +1,23 @@
+﻿<Project Sdk="Remora.Sdk/2.0.1">
+
+  <PropertyGroup>
+    <LibraryFrameworks>net461;netstandard2.1;net6.0;net7.0</LibraryFrameworks>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <VersionPrefix>2.1.0</VersionPrefix>
+    <Description>Provides an extended set of errors for Tafs.Activities.Results and Remora.Results.</Description>
+    <PackageReleaseNotes>Re-release as Remora.Sdk.</PackageReleaseNotes>
+    <PackageTags>$(PackageTags);UiPath;Activities;Remora;Result;</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net461'">
+    <Reference Include="System.Net.Http" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Remora.Results" Version="7.2.3" />
+    <PackageReference Include="Remora.Results.Analyzers" Version="1.0.0" />
+  </ItemGroup>
+
+</Project>
