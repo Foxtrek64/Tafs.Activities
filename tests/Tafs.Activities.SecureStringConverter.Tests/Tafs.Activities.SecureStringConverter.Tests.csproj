@@ -1,4 +1,9 @@
 <Project Sdk="Remora.Tests.Sdk/2.0.2">
+
+  <PropertyGroup>
+    <ExcludeTestsFromCoverage>false</ExcludeTestsFromCoverage>
+  </PropertyGroup>
+  
   <ItemGroup>
     <ProjectReference Include="..\..\src\Tafs.Activities.SecureStringConverter\Tafs.Activities.SecureStringConverter.csproj" />
   </ItemGroup>

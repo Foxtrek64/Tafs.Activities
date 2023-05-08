@@ -4,6 +4,10 @@
     <LibraryFrameworks>net48</LibraryFrameworks>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <ExcludeTestsFromCoverage>false</ExcludeTestsFromCoverage>
+  </PropertyGroup>
+
   <ItemGroup>
     <Reference Include="System.Activities" />
   </ItemGroup>
