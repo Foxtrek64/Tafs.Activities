@@ -1,0 +1,18 @@
+﻿<Project Sdk="Remora.Tests.Sdk/2.0.2">
+
+  <PropertyGroup>
+    <LibraryFrameworks>net48</LibraryFrameworks>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <ExcludeTestsFromCoverage>false</ExcludeTestsFromCoverage>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="System.Activities" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Tafs.Activities.ActivityBase\Tafs.Activities.ActivityBase.csproj" />
+  </ItemGroup>
+</Project>
