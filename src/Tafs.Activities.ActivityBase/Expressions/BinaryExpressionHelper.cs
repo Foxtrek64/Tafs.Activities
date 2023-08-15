@@ -1,4 +1,26 @@
-﻿using System;
+﻿//
+//  BinaryExpressionHelper.cs
+//
+//  Author:
+//       Devin Duanne <dduanne@tafs.com>
+//
+//  Copyright (c) TAFS, LLC.
+//
+//  This program is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU Lesser General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
+//
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU Lesser General Public License for more details.
+//
+//  You should have received a copy of the GNU Lesser General Public License
+//  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//
+
+using System;
 using System.Activities;
 using System.Activities.Validation;
 using System.Collections.Generic;
@@ -25,7 +47,7 @@ namespace Tafs.Activities.ActivityBase.Expressions
         /// <param name="t1">An instance of the in-argument.</param>
         public static void OnGetArguments<T1>(CodeActivityMetadata metadata, InArgument<T1> t1)
         {
-            RuntimeArgument t1Argument = new("T1", typeof(T1), ArgumentDirection.In, true);
+            RuntimeArgument t1Argument = new(nameof(T1), typeof(T1), ArgumentDirection.In, true);
             metadata.Bind(t1, t1Argument);
 
             metadata.SetArgumentsCollection(new Collection<RuntimeArgument>
@@ -38,9 +60,24 @@ namespace Tafs.Activities.ActivityBase.Expressions
         /// Gets and binds arguments.
         /// </summary>
         /// <typeparam name="T1">The type of the first argument.</typeparam>
-        /// <typeparam name="T2">The type of the second argument.</typeparam>
         /// <param name="metadata">The metadata to bind to.</param>
         /// <param name="t1">An instance of the in-argument.</param>
+        public static void OnGetArguments<T1>(CodeActivityMetadata metadata, InOutArgument<T1> t1)
+        {
+            RuntimeArgument t1Argument = new(nameof(T1), typeof(T1), ArgumentDirection.In, true);
+            metadata.Bind(t1, t1Argument);
+
+            metadata.SetArgumentsCollection(new Collection<RuntimeArgument> { t1Argument });
+        }
+
+        /// <summary>
+        /// Gets and binds arguments.
+        /// </summary>
+        /// <typeparam name="T1">The type of the first argument.</typeparam>
+        /// <typeparam name="T2">The type of the second argument.</typeparam>
+        /// <param name="metadata">The metadata to bind to.</param>
+        /// <param name="t1">An instance of the first in-argument.</param>
+        /// <param name="t2">An instance of the second in-argument.</param>
         public static void OnGetArguments<T1, T2>(CodeActivityMetadata metadata, InArgument<T1> t1, InArgument<T2> t2)
         {
             RuntimeArgument t1Argument = new(nameof(T1), typeof(T1), ArgumentDirection.In, true);

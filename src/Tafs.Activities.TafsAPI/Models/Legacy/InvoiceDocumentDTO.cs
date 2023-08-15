@@ -1,5 +1,5 @@
 ﻿//
-//  AuthenticationContext.xaml.cs
+//  InvoiceDocumentDTO.cs
 //
 //  Author:
 //       Devin Duanne <dduanne@tafs.com>
@@ -20,17 +20,23 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-namespace Tafs.Activities.NetworkActivities.Activities
+using System;
+using System.Collections.Generic;
+
+namespace Tafs.Activities.TafsAPI.Models.Legacy
 {
-    // Interaction logic for AuthenticationContext.xaml
-    public partial class AuthenticationContext
+    public sealed record class InvoiceDocumentDTO
+    (
+        Guid InvoiceDocumentId,
+        Guid InvoiceId,
+        string DocumentType,
+        bool DecompressDocument,
+        short? ItemSort
+    )
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="AuthenticationContext"/> class.
+        /// Gets a list of Invoice attachments.
         /// </summary>
-        public AuthenticationContext()
-        {
-            // InitializeComponent();
-        }
+        public List<InvoiceAttachmentDTO> InvoiceAttachments { get; } = new();
     }
 }

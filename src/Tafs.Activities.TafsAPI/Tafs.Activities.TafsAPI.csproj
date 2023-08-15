@@ -1,0 +1,22 @@
+﻿<Project Sdk="Remora.Sdk/2.1.1">
+
+  <PropertyGroup>
+    <LibraryFrameworks>net461;netstandard2.1;net6.0;net7.0</LibraryFrameworks>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <VersionPrefix>0.1.0</VersionPrefix>
+    <Description>Provides a set of models and helper libraries for interfacing with the TAFS API.</Description>
+    <PackageReleaseNotes>Initial release</PackageReleaseNotes>
+    <PackageTags>$(PackageTags);Tafs-API</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Services\" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net461'">
+    <PackageReference Include="PolySharp" Version="1.13.1" />
+  </ItemGroup>
+
+</Project>
