@@ -22,7 +22,9 @@
 
 namespace Tafs.Activities.NetworkActivities.Activities
 {
-    // Interaction logic for AuthenticationContext.xaml
+    /// <summary>
+    /// Defines interactin logic for <see cref="AuthenticationContext"/>.xaml.
+    /// </summary>
     public partial class AuthenticationContext
     {
         /// <summary>
