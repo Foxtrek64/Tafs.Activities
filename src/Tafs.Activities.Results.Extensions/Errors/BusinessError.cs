@@ -20,13 +20,16 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
+using JetBrains.Annotations;
 using Remora.Results;
 
 namespace Tafs.Activities.Results.Extensions.Errors
 {
     /// <summary>
-    /// Represents a generic error arising from a problem with data or the environment.
+    /// Represents a generic error arising from a problem with data or a permanent issue with the environment.
     /// </summary>
+    /// <remarks>Intended for persistent issues where simply retrying later will not resolve the issue.</remarks>
     /// <param name="Message">The error message.</param>
+    [PublicAPI]
     public sealed record class BusinessError(string Message) : ResultError(Message);
 }

@@ -23,12 +23,8 @@
 using System;
 using System.Activities;
 using System.Activities.Validation;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Tafs.Activities.ActivityBase.Expressions
 {
@@ -37,6 +33,9 @@ namespace Tafs.Activities.ActivityBase.Expressions
     /// </summary>
     /// <typeparam name="TNumeral">A numeric value, such as <see langword="int"/> or <see langword="long"/>.</typeparam>
     public sealed class Increment<TNumeral> : CodeActivity<TNumeral>
+#if NET7_0_OR_GREATER
+        where TNumeral : System.Numerics.INumber<TNumeral>
+#endif
     {
         private static Func<TNumeral, TNumeral> operationFunction = null!;
 

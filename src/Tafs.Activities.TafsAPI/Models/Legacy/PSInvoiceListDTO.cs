@@ -22,10 +22,10 @@
 
 using System;
 using System.Collections.Generic;
-using JetBrains.Annotations;
 
 namespace Tafs.Activities.TafsAPI.Models.Legacy
 {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public sealed record class PSInvoiceListDTO
     (
         int? TotalRecords,
@@ -81,7 +81,7 @@ namespace Tafs.Activities.TafsAPI.Models.Legacy
         List<InvoiceTransactionDTO> InvoiceCharges,
         List<InvoiceTransactionDTO> InvoiceDeductions,
         List<InvoiceDocumentDTO> InvoiceDocuments
-    )
+    ) : IApiModel
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PSInvoiceListDTO"/> class.

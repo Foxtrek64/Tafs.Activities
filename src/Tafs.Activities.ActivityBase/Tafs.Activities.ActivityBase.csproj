@@ -1,24 +1,31 @@
 ﻿<Project Sdk="Remora.Sdk">
 
   <PropertyGroup>
-    <LibraryFrameworks>net461</LibraryFrameworks>
+    <LibraryFrameworks>net461;net6.0;net7.0</LibraryFrameworks>
   </PropertyGroup>
 
   <PropertyGroup>
-    <VersionPrefix>2.1.0</VersionPrefix>
-    <Description>Provides extended base types for custom activities.</Description>
-    <PackageReleaseNotes>Re-release using Remora.Sdk.</PackageReleaseNotes>
+    <VersionPrefix>2.2.0</VersionPrefix>
+    <ProjectDescription>Provides extended base types for custom activities.</ProjectDescription>
+    <PackageReleaseNotes>Add net6.0 target.</PackageReleaseNotes>
     <PackageTags>$(PackageTags);UiPath;Activities;</PackageTags>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net461'">
     <Reference Include="System.Activities" />
-    <PackageReference Include="PolySharp" Version="1.13.1" />
+    <PackageReference Include="PolySharp" Version="1.13.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' != 'net461'">
+    <PackageReference Include="UiPath.Workflow" Version="6.0.3" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Nito.AsyncEx.Tasks" Version="5.1.2" />
-    <PackageReference Include="Shouldly" Version="4.1.0" />
+    <PackageReference Include="Shouldly" Version="4.2.1" />
   </ItemGroup>
 
 </Project>

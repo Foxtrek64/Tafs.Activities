@@ -21,6 +21,8 @@
 //
 
 using System;
+using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using JetBrains.Annotations;
 using Remora.Results;
@@ -33,6 +35,7 @@ namespace Tafs.Activities.Finance.Models
     /// Represents a 9-digit United States social security number.
     /// </summary>
     [PublicAPI]
+    [DebuggerDisplay($"{{{nameof(GetDebuggerDisplay)}(),nq}}")]
     public readonly struct SocialSecurityNumber : IFormattable, IEquatable<SocialSecurityNumber>
     {
         /// <summary>
@@ -61,11 +64,13 @@ namespace Tafs.Activities.Finance.Models
         /// <summary>
         /// Gets a <see cref="SocialSecurityNumber"/> used as a sample for advertisements and documentation by the Social Security Administration.
         /// </summary>
+        /// <remarks>219-09-9999.</remarks>
         public static SocialSecurityNumber SampleNumber { get; } = new SocialSecurityNumber(219, 09, 9999);
 
         /// <summary>
         /// Gets a decommissioned <see cref="SocialSecurityNumber"/> once issued to an employee of Woolsworth Wallets.
         /// </summary>
+        /// <remarks>078-05-1120.</remarks>
         /// <seealso href="https://www.ssa.gov/history/ssn/misused.html"/>
         public static SocialSecurityNumber WoolsworthSSN { get; } = new SocialSecurityNumber(078, 05, 1120);
 
@@ -74,6 +79,29 @@ namespace Tafs.Activities.Finance.Models
             AreaNumber = areaNumber;
             GroupNumber = groupNumber;
             SerialNumber = serialNumber;
+        }
+
+        /// <inheritdoc cref="FromString(string)"/>
+        /// <returns>The parsed SocialSecurityNumber.</returns>
+        /// <exception cref="ArgumentException">Thrown when a parse error occurs.</exception>
+        public static SocialSecurityNumber Parse(string ssn)
+        {
+            Result<SocialSecurityNumber> parseResult = FromString(ssn);
+
+            return parseResult.IsDefined(out var parsedNumber)
+                ? parsedNumber
+                : throw new ArgumentException(parseResult.Error!.Message, nameof(ssn));
+        }
+
+        /// <summary>
+        /// Attempts to parse the provided string into an instance of <see cref="SocialSecurityNumber"/>.
+        /// </summary>
+        /// <param name="ssn">The social security number to validate.</param>
+        /// <param name="result">The parsed <see cref="SocialSecurityNumber"/>.</param>
+        /// <returns><see langword="true" /> if the parse succeeded; otherwise, <see langword="false" />.</returns>
+        public static bool TryParse(string ssn, out SocialSecurityNumber result)
+        {
+            return FromString(ssn).IsDefined(out result);
         }
 
         /// <summary>
@@ -103,10 +131,10 @@ namespace Tafs.Activities.Finance.Models
                 return new ArgumentOutOfRangeError(nameof(ssn), "Provided value was shorter than 9 characters.");
             }
 
-            var firstIndex = Array.FindIndex(ssn.ToCharArray(), "0123456789".Contains);
-            if (firstIndex > -1)
+            bool allNumbers = Array.TrueForAll(ssn.ToCharArray(), "0123456789".Contains);
+            if (!allNumbers)
             {
-                return new ArgumentInvalidError(nameof(ssn), $"Social Security Numbers may only consist of digits, hyphens, and spaces. Received: '{ssn[firstIndex]}' at index '{firstIndex}'.");
+                return new ArgumentInvalidError(nameof(ssn), $"Social Security Numbers may only consist of the numbers [0-9], hyphens, and spaces.");
             }
 
             short areaNumber = (short)(
@@ -198,47 +226,25 @@ namespace Tafs.Activities.Finance.Models
         /// <returns>This <see cref="SocialSecurityNumber"/> as an array.</returns>
         public int[] AsArray()
         {
+            static void Subdivide(short value, int[] number, int count)
+            {
+                if (value == 0)
+                {
+                    return;
+                }
+
+                for (short x = value; x > 0; x /= 10)
+                {
+                    number[count--] = x % 10;
+                }
+
+                return;
+            }
+
             var number = new int[9];
-
-            if (AreaNumber == 0 && GroupNumber == 0 && SerialNumber == 0)
-            {
-                return number;
-            }
-
-            var count = 0;
-
-            // Goes from most to least significant unit.
-            // Process in reverse, then reverse the entire number.
-            var x = SerialNumber;
-            for (; x > 0; x /= 10)
-            {
-                number[count++] = x % 10;
-            }
-
-            // Backfill with leading zeros
-            while (count != 4)
-            {
-                number[count++] = 0;
-            }
-
-            x = GroupNumber;
-            for (; x > 0; x /= 10)
-            {
-                number[count++] = x % 10;
-            }
-
-            while (count != 6)
-            {
-                number[count++] = 0;
-            }
-
-            x = AreaNumber;
-            for (; x > 0; x /= 10)
-            {
-                number[count++] = x % 10;
-            }
-
-            Array.Reverse(number);
+            Subdivide(SerialNumber, number, count: 8);
+            Subdivide(GroupNumber, number, count: 4);
+            Subdivide(AreaNumber, number, count: 2);
 
             return number;
         }
@@ -337,5 +343,10 @@ namespace Tafs.Activities.Finance.Models
         /// <inheritdoc/>
         public override int GetHashCode()
             => HashCode.Combine(AreaNumber, GroupNumber, SerialNumber);
+
+        private string GetDebuggerDisplay()
+        {
+            return ToString();
+        }
     }
 }

@@ -1,0 +1,46 @@
+﻿<Project Sdk="Remora.Sdk">
+
+  <PropertyGroup>
+    <LibraryFrameworks>net461;net6.0;net7.0</LibraryFrameworks>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <VersionPrefix>0.1.0</VersionPrefix>
+    <Description>Provides a UiPath library for handling mediated events/messaging.</Description>
+    <PackageReleaseNotes>Re-release as Remora.Sdk.</PackageReleaseNotes>
+    <PackageTags>$(PackageTags);UiPath;Activities;Remora;Result;</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net461'">
+    <PackageReference Include="PolySharp" Version="1.13.1" />
+    <Reference Include="System.Activities" />
+    <ProjectReference Include="..\Tafs.Activities.ActivityBase\Tafs.Activities.ActivityBase.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Bcl.HashCode" Version="1.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="7.0.1" />
+    <PackageReference Include="Remora.Results" Version="7.2.3" />
+    <PackageReference Include="Remora.Results.Analyzers" Version="1.0.0" />
+    <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.4" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' != 'net461'">
+    <PackageReference Include="UiPath.Workflow" Version="6.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Tafs.Activities.Results.Extensions\Tafs.Activities.Results.Extensions.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="UiPath.Activities.Api.Base">
+      <HintPath>..\..\..\..\Program Files\UiPath\Studio\UiPath.Activities.Api.Base.dll</HintPath>
+    </Reference>
+    <Reference Include="UiPath.Activities.Contracts">
+      <HintPath>..\..\..\..\Program Files\UiPath\Studio\UiPath.Activities.Contracts.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
