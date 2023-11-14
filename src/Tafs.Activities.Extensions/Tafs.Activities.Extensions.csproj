@@ -1,4 +1,4 @@
-<Project Sdk="Remora.Sdk">
+﻿<Project Sdk="Remora.Sdk">
 
   <PropertyGroup>
     <LibraryFrameworks>net6.0;net7.0</LibraryFrameworks>
@@ -15,6 +15,11 @@
 
   <ItemGroup>
     <PackageReference Include="UiPath.Workflow" Version="6.0.3" />
+    <PackageReference Include="UiPath.Workflow.Runtime" Version="6.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Design\" />
   </ItemGroup>
 
 </Project>
