@@ -20,4 +20,8 @@
     <PackageReference Include="Remora.Results.Analyzers" Version="1.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="System.Workflow.Activities" />
+  </ItemGroup>
+
 </Project>

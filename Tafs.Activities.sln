@@ -43,13 +43,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tafs.Activities.Commons", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tafs.Activities.TafsApi.Activities", "src\Tafs.Activities.TafsApi.Activities\Tafs.Activities.TafsApi.Activities.csproj", "{62C3AD90-C73B-42CD-AC96-01C27A86F74C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tafs.Activities.Mediator", "src\Tafs.Activities.Mediator\Tafs.Activities.Mediator.csproj", "{A894F66F-3B9D-415B-B7A3-266F92AA1345}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tafs.Activities.Functions", "src\Tafs.Activities.Functions\Tafs.Activities.Functions.csproj", "{1E892F6B-1B8E-4B44-83CB-084736C39F17}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tafs.Activities.Finance.Tests", "tests\Tafs.Activities.Finance.Tests\Tafs.Activities.Finance.Tests.csproj", "{E53006A6-EC0B-4336-ADFB-4F4E77AD3E69}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tafs.Activities.Extensions", "src\Tafs.Activities.Extensions\Tafs.Activities.Extensions.csproj", "{7B4DA626-F437-4D53-976D-6A4450F1F63C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tafs.Activities.Extensions", "src\Tafs.Activities.Extensions\Tafs.Activities.Extensions.csproj", "{7B4DA626-F437-4D53-976D-6A4450F1F63C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -97,10 +95,6 @@ Global
 		{62C3AD90-C73B-42CD-AC96-01C27A86F74C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{62C3AD90-C73B-42CD-AC96-01C27A86F74C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{62C3AD90-C73B-42CD-AC96-01C27A86F74C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A894F66F-3B9D-415B-B7A3-266F92AA1345}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A894F66F-3B9D-415B-B7A3-266F92AA1345}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A894F66F-3B9D-415B-B7A3-266F92AA1345}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A894F66F-3B9D-415B-B7A3-266F92AA1345}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1E892F6B-1B8E-4B44-83CB-084736C39F17}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1E892F6B-1B8E-4B44-83CB-084736C39F17}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1E892F6B-1B8E-4B44-83CB-084736C39F17}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -130,7 +124,6 @@ Global
 		{F33C6BA1-0F55-4E5C-AF0E-8DF4474D3592} = {6B5C8467-D171-4D65-A072-45364F7B126A}
 		{21C9591B-B76A-4025-8027-DDCA59A31F69} = {6B5C8467-D171-4D65-A072-45364F7B126A}
 		{62C3AD90-C73B-42CD-AC96-01C27A86F74C} = {6B5C8467-D171-4D65-A072-45364F7B126A}
-		{A894F66F-3B9D-415B-B7A3-266F92AA1345} = {6B5C8467-D171-4D65-A072-45364F7B126A}
 		{1E892F6B-1B8E-4B44-83CB-084736C39F17} = {6B5C8467-D171-4D65-A072-45364F7B126A}
 		{E53006A6-EC0B-4336-ADFB-4F4E77AD3E69} = {96C4D024-6CB6-438C-900A-E86DF1F34066}
 		{7B4DA626-F437-4D53-976D-6A4450F1F63C} = {6B5C8467-D171-4D65-A072-45364F7B126A}
