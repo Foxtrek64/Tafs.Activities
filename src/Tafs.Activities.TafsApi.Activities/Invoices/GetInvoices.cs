@@ -47,27 +47,27 @@ namespace Tafs.Activities.TafsApi.Activities.Invoices
         /// Gets or sets the access key used to identify the calling process.
         /// </summary>
         [RequiredArgument]
-        public required InArgument<string> AccessKey { get; set; }
+        public InArgument<string> AccessKey { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets or sets the page number.
         /// </summary>
         [DefaultValue(1)]
         [RequiredArgument]
-        public required InArgument<int> PageNumber { get; set; } = 1;
+        public InArgument<int> PageNumber { get; set; } = 1;
 
         /// <summary>
         /// Gets or sets the number of results per page.
         /// </summary>
         [DefaultValue(50)]
         [RequiredArgument]
-        public required InArgument<int> PageSize { get; set; } = 50;
+        public InArgument<int> PageSize { get; set; } = 50;
 
         /// <summary>
         /// Gets or sets the name of the tab.
         /// </summary>
         [RequiredArgument]
-        public required InArgument<string> TabName { get; set; }
+        public InArgument<string> TabName { get; set; } = string.Empty;
 
         /// <inheritdoc/>
         protected override Task<ApiResult<InvoiceList[]>> ExecuteAsync(AsyncCodeActivityContext context, CancellationToken cancellationToken)
