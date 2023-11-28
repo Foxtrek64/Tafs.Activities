@@ -1,5 +1,5 @@
 ﻿//
-//  ActivityDecoratorControl.cs
+//  AddToDictionaryDesign.xaml.cs
 //
 //  Author:
 //       Devin Duanne <dduanne@tafs.com>
@@ -20,22 +20,19 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-using System.Windows;
-using System.Windows.Controls;
-
-namespace Tafs.Activities.Extensions
+namespace Tafs.Activities.Extensions.Design.Statements
 {
     /// <summary>
-    /// Represents a content control on an activity design.
+    /// Interaction logic for AddToDictionaryDesign.xaml.
     /// </summary>
-    public sealed class ActivityDecoratorControl : ContentControl
+    public partial class AddToDictionaryDesign
     {
         /// <summary>
-        /// Initializes static members of the <see cref="ActivityDecoratorControl"/> class.
+        /// Initializes a new instance of the <see cref="AddToDictionaryDesign"/> class.
         /// </summary>
-        static ActivityDecoratorControl()
+        public AddToDictionaryDesign()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(ActivityDecoratorControl), new FrameworkPropertyMetadata(typeof(ActivityDecoratorControl)));
+            InitializeComponent();
         }
     }
 }

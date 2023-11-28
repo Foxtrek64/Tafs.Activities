@@ -1,4 +1,4 @@
-﻿<sap:ActivityDesigner x:Class="Tafs.Activities.Extensions.Design.AddToDictionaryDesign"
+﻿<sap:ActivityDesigner x:Class="Tafs.Activities.Extensions.Design.Statements.AddToDictionaryDesign"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:s="clr-namespace:System;assembly=mscorlib"
