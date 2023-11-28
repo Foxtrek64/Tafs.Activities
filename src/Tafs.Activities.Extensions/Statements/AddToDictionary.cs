@@ -32,6 +32,7 @@ namespace Tafs.Activities.Extensions.Statements
     /// </summary>
     /// <typeparam name="TKey">The key.</typeparam>
     /// <typeparam name="TValue">The value.</typeparam>
+    [DisplayName("Add To Dictionary")]
     [Description("Adds the element with the provided key and value to the Dictionary.")]
     public sealed class AddToDictionary<TKey, TValue> : CodeActivity
     {
@@ -40,20 +41,20 @@ namespace Tafs.Activities.Extensions.Statements
         /// </summary>
         [RequiredArgument]
         [Description("The dictionary to modify.")]
-        public InArgument<IDictionary<TKey, TValue>> Dictionary { get; set; } = null!;
+        public InArgument<IDictionary<TKey, TValue>> Dictionary { get; set; } = new();
 
         /// <summary>
         /// Gets or sets the key.
         /// </summary>
         [RequiredArgument]
         [Description("The object to use as the key of the element to add.")]
-        public InArgument<TKey> Key { get; set; } = null!;
+        public InArgument<TKey> Key { get; set; } = new();
 
         /// <summary>
         /// Gets or sets the value.
         /// </summary>
         [Description("The object to use as the value of the element to add.")]
-        public InArgument<TValue> Value { get; set; } = null!;
+        public InArgument<TValue> Value { get; set; } = new();
 
         /// <inheritdoc/>
         protected override void Execute(CodeActivityContext context)

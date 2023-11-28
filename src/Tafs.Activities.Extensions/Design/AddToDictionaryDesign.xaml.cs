@@ -1,5 +1,5 @@
 ﻿//
-//  AuthenticationContext.xaml.cs
+//  AddToDictionaryDesign.xaml.cs
 //
 //  Author:
 //       Devin Duanne <dduanne@tafs.com>
@@ -20,19 +20,19 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-namespace Tafs.Activities.NetworkActivities.Activities
+namespace Tafs.Activities.Extensions.Design
 {
     /// <summary>
-    /// Defines interactin logic for <see cref="AuthenticationContext"/>.xaml.
+    /// Interaction logic for AddToDictionaryDesign.xaml.
     /// </summary>
-    public partial class AuthenticationContext
+    public partial class AddToDictionaryDesign
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="AuthenticationContext"/> class.
+        /// Initializes a new instance of the <see cref="AddToDictionaryDesign"/> class.
         /// </summary>
-        public AuthenticationContext()
+        public AddToDictionaryDesign()
         {
-            // InitializeComponent();
+            InitializeComponent();
         }
     }
 }

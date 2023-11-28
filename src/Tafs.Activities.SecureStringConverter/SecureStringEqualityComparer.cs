@@ -99,7 +99,7 @@ namespace Tafs.Activities.SecureStringConverter
                 hashCode.Add(i);
             }
 
-            return hashCode.GetHashCode();
+            return hashCode.ToHashCode();
         }
     }
 }

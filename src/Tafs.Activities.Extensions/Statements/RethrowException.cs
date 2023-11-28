@@ -1,5 +1,5 @@
 ﻿//
-//  ClearDictionary.cs
+//  RethrowException.cs
 //
 //  Author:
 //       Devin Duanne <dduanne@tafs.com>
@@ -22,31 +22,28 @@
 
 using System;
 using System.Activities;
-using System.Collections.Generic;
-using System.ComponentModel;
 
 namespace Tafs.Activities.Extensions.Statements
 {
     /// <summary>
-    /// Cleares the provided dictionary.
+    /// Rethrows the provided exception outside of a catch block without resetting the stack trace.
     /// </summary>
-    /// <typeparam name="TKey">The key.</typeparam>
-    /// <typeparam name="TValue">The value.</typeparam>
-    [Description("Clears the provided dictionary.")]
-    public sealed class ClearDictionary<TKey, TValue> : CodeActivity
+    public sealed class RethrowException : CodeActivity
     {
         /// <summary>
-        /// Gets or sets the dictionary to clear.
+        /// Gets or sets the exception to rethrow.
         /// </summary>
         [RequiredArgument]
-        [Description("The dictionary to clear.")]
-        public InArgument<IDictionary<TKey, TValue>> Dictionary { get; set; } = new();
+        public InArgument<Exception> Exception { get; set; } = new();
 
         /// <inheritdoc/>
         protected override void Execute(CodeActivityContext context)
         {
-            IDictionary<TKey, TValue> dict = Dictionary.Get(context) ?? throw new InvalidOperationException("The provided dictionary is null.");
-            dict.Clear();
+            var ex = Exception.Get(context);
+            System.Runtime.ExceptionServices.ExceptionDispatchInfo.Capture(ex).Throw();
+
+            // Unreachable code. Informs compiler that the flow never leaves the block.
+            throw ex;
         }
     }
 }

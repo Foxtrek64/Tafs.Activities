@@ -1,12 +1,13 @@
 ﻿<Project Sdk="Remora.Sdk">
 
   <PropertyGroup>
-    <LibraryFrameworks>net6.0;net7.0</LibraryFrameworks>
+    <LibraryFrameworks>net6.0-windows;net7.0-windows;net8.0-windows</LibraryFrameworks>
+    <UseWPF>true</UseWPF>
   </PropertyGroup>
 
   <PropertyGroup>
-    <VersionPrefix>0.1.1</VersionPrefix>
-    <PackageReleaseNotes>Initial Release</PackageReleaseNotes>
+    <VersionPrefix>0.1.2</VersionPrefix>
+    <PackageReleaseNotes>Add expressions. Remove unnecesary dependencies. Change library frameworks.</PackageReleaseNotes>
     <Description>
       Adds a set of extensions and addons, a la Microsoft.Acivities.Extensions.
     </Description>
@@ -15,11 +16,17 @@
 
   <ItemGroup>
     <PackageReference Include="UiPath.Workflow" Version="6.0.3" />
-    <PackageReference Include="UiPath.Workflow.Runtime" Version="6.0.3" />
+    <PackageReference Include="System.Activities.Core.Presentation" Version="6.0.0-20220831.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Design\" />
+    <None Update="Design\AddToDictionaryDesign.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Design\Themes\" />
   </ItemGroup>
 
 </Project>

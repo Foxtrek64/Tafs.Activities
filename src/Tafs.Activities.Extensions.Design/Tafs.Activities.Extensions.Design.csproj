@@ -1,0 +1,25 @@
+<Project Sdk="Remora.Sdk">
+
+  <PropertyGroup>
+    <LibraryFrameworks>net6.0;net7.0</LibraryFrameworks>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <VersionPrefix>0.1.0</VersionPrefix>
+    <PackageReleaseNotes>Initial Release</PackageReleaseNotes>
+    <Description>
+      Adds visual design libraries for Tafs.Activities.
+    </Description>
+    <PackageTags>$(PackageTags)</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="UiPath.Workflow" Version="6.0.3" />
+    <PackageReference Include="UiPath.Workflow.Runtime" Version="6.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Design\" />
+  </ItemGroup>
+
+</Project>
