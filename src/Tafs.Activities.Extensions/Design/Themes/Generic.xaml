@@ -3,14 +3,15 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:s="clr-namespace:System.Windows.Controls.Primitives;assembly=PresentationFramework"
     xmlns:src="clr-namespace:Tafs.Activities.Extensions"
+    xmlns:design="clr-namespace:Tafs.Activities.Extensions.Design"
     xmlns:sys="clr-namespace:System;assembly=mscorlib"
     xmlns:sapv="clr-namespace:System.Activities.Presentation.View;assembly=System.Activities.Presentation"
     xmlns:sap="clr-namespace:System.Activities.Presentation;assembly=System.Activities.Presentation">
 
-    <Style TargetType="{x:Type src:ActivityDecoratorControl}" x:Key="ActivityDecoratorStyle">
+    <Style TargetType="{x:Type design:ActivityDecoratorControl}" x:Key="ActivityDecoratorStyle">
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="{x:Type src:ActivityDecoratorControl}">
+                <ControlTemplate TargetType="{x:Type design:ActivityDecoratorControl}">
                     <Grid>
                         <Grid>
                             <Grid.Style>
@@ -23,7 +24,7 @@
                                     </Style.Triggers>
                                 </Style>
                             </Grid.Style>
-                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontStyle="Italic" Foreground="#FF6D6D6D" Text="{x:Static p:Resources.DoubleClickToView}">
+                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontStyle="Italic" Foreground="#FF6D6D6D" Text="Double Click To View">
                             </TextBlock>
                         </Grid>
                         <Grid>
