@@ -23,7 +23,7 @@
 using System.Windows;
 using System.Windows.Controls;
 
-namespace Tafs.Activities.Extensions.Design
+namespace Tafs.Activities.Extensions
 {
     /// <summary>
     /// Represents a content control on an activity design.

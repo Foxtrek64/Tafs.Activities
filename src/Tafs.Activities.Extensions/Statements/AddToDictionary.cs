@@ -24,6 +24,7 @@ using System;
 using System.Activities;
 using System.Collections.Generic;
 using System.ComponentModel;
+using Tafs.Activities.Extensions.Design;
 
 namespace Tafs.Activities.Extensions.Statements
 {
@@ -34,6 +35,7 @@ namespace Tafs.Activities.Extensions.Statements
     /// <typeparam name="TValue">The value.</typeparam>
     [DisplayName("Add To Dictionary")]
     [Description("Adds the element with the provided key and value to the Dictionary.")]
+    [Designer(typeof(AddToDictionaryDesign))]
     public sealed class AddToDictionary<TKey, TValue> : CodeActivity
     {
         /// <summary>
