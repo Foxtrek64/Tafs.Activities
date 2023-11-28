@@ -7,35 +7,31 @@
     <ContentControl.Template>
         <ControlTemplate>
             <Grid>
-                <Grid>
-                    <Grid.Style>
-                        <Style>
-                            <Setter Property="Grid.Visibility" Value="Visible" />
+                <TextBlock x:Name="ExpandText" HorizontalAlignment="Center" FontStyle="Italic" Foreground="#FF6D6D6D" Text="Double Click To View">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="TextBlock.Visibility" Value="Visible" />
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding Path=ShowExpanded}" Value="true">
-                                    <Setter Property="Grid.Visibility" Value="Collapsed" />
+                                    <Setter Property="TextBlock.Visibility" Value="Collapsed" />
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
-                    </Grid.Style>
-                    <TextBlock HorizontalAlignment="Center" FontStyle="Italic" Foreground="#FF6D6D6D" Text="Double Click To View" />
-                </Grid>
-                <Grid>
-                    <Grid.Style>
-                        <Style>
-                            <Setter Property="Grid.Visibility" Value="Visible" />
-                            <Setter Property="Grid.MinWidth" Value="300" />
-
+                    </TextBlock.Style>
+                </TextBlock>
+                <Border>
+                    <ContentPresenter MinWidth="300" />
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Setter Property="Visibility" Value="Visible" />
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding Path=ShowExpanded}" Value="false">
-                                    <Setter Property="Grid.MinWidth" Value="30" />
-                                    <Setter Property="Grid.Visibility" Value="Collapsed" />
+                                    <Setter Property="Visibility" Value="Collapsed" />
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
-                    </Grid.Style>
-                    <ContentPresenter />
-                </Grid>
+                    </Border.Style>
+                </Border>
             </Grid>
         </ControlTemplate>
     </ContentControl.Template>

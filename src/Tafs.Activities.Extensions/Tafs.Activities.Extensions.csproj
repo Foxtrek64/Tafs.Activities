@@ -19,14 +19,4 @@
     <PackageReference Include="System.Activities.Core.Presentation" Version="6.0.0-20220831.1" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="Design\AddToDictionaryDesign.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Design\Themes\" />
-  </ItemGroup>
-
 </Project>

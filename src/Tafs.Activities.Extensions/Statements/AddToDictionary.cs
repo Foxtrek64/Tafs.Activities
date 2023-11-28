@@ -24,7 +24,7 @@ using System;
 using System.Activities;
 using System.Collections.Generic;
 using System.ComponentModel;
-using Tafs.Activities.Extensions.Design;
+using Tafs.Activities.Extensions.Design.Statements;
 
 namespace Tafs.Activities.Extensions.Statements
 {
