@@ -1,0 +1,44 @@
+﻿<Project Sdk="Remora.Sdk">
+
+  <PropertyGroup>
+    <LibraryFrameworks>net6.0-windows;net7.0-windows;net8.0-windows</LibraryFrameworks>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <VersionPrefix>0.1.2</VersionPrefix>
+    <PackageReleaseNotes>Add expressions. Remove unnecesary dependencies. Change library frameworks.</PackageReleaseNotes>
+    <Description>
+      Provides designs for Tafs.Activities.Extensions.
+    </Description>
+    <PackageTags>$(PackageTags)</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Page Remove="ActivityDecoratorControl.xaml" />
+    <Page Remove="Conditions\AreEqualDesign.xaml" />
+    <Page Remove="Statements\AddToDictionaryDesign.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="ActivityDecoratorControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Include="Conditions\AreEqualDesign.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Include="Statements\AddToDictionaryDesign.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="UiPath.Workflow" Version="6.0.3" />
+    <PackageReference Include="System.Activities.Core.Presentation" Version="6.0.0-20220831.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Tafs.Activities.Extensions\Tafs.Activities.Extensions.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Remora.Sdk">
 
   <PropertyGroup>
-    <LibraryFrameworks>net6.0-windows;net7.0-windows;net8.0-windows</LibraryFrameworks>
+    <LibraryFrameworks>net6.0;net7.0;net8.0</LibraryFrameworks>
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
@@ -16,7 +16,6 @@
 
   <ItemGroup>
     <PackageReference Include="UiPath.Workflow" Version="6.0.3" />
-    <PackageReference Include="System.Activities.Core.Presentation" Version="6.0.0-20220831.1" />
   </ItemGroup>
 
 </Project>
