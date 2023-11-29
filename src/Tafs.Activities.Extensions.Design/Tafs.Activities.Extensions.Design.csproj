@@ -15,24 +15,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Page Remove="ActivityDecoratorControl.xaml" />
-    <Page Remove="Conditions\AreEqualDesign.xaml" />
-    <Page Remove="Statements\AddToDictionaryDesign.xaml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="ActivityDecoratorControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Include="Conditions\AreEqualDesign.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Include="Statements\AddToDictionaryDesign.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="UiPath.Workflow" Version="6.0.3" />
     <PackageReference Include="System.Activities.Core.Presentation" Version="6.0.0-20220831.1" />
   </ItemGroup>

@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <LibraryFrameworks>net6.0;net7.0;net8.0</LibraryFrameworks>
-    <UseWPF>true</UseWPF>
   </PropertyGroup>
 
   <PropertyGroup>
