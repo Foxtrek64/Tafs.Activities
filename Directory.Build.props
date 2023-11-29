@@ -4,6 +4,11 @@
 		<LegalEmail>dduanne@tafs.com</LegalEmail>
     <Company>TAFS, LLC.</Company>
     <LegalCopyrightHolder>TAFS, LLC.</LegalCopyrightHolder>
+    <Description>
+      $(ProjectDescription)
+
+      New in $(VersionPrefix)$(VersionSuffix): $(PackageReleaseNotes)
+    </Description>
 	</PropertyGroup>
 
 	<PropertyGroup>

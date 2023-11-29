@@ -1,0 +1,5 @@
+﻿<Project Sdk="Remora.Tests.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Tafs.Activities.Finance\Tafs.Activities.Finance.csproj" />
+  </ItemGroup>
+</Project>

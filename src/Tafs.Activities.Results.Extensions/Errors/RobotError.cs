@@ -1,5 +1,5 @@
 ﻿//
-//  AuthenticationContext.xaml.cs
+//  RobotError.cs
 //
 //  Author:
 //       Devin Duanne <dduanne@tafs.com>
@@ -20,19 +20,16 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-namespace Tafs.Activities.NetworkActivities.Activities
+using JetBrains.Annotations;
+using Remora.Results;
+
+namespace Tafs.Activities.Results.Extensions.Errors
 {
     /// <summary>
-    /// Defines interactin logic for <see cref="AuthenticationContext"/>.xaml.
+    /// Represents a generic error arising from a transient issue with the environment or robot runtime.
     /// </summary>
-    public partial class AuthenticationContext
-    {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AuthenticationContext"/> class.
-        /// </summary>
-        public AuthenticationContext()
-        {
-            // InitializeComponent();
-        }
-    }
+    /// <remarks>Intended for transient issues (e.g. network issues) which may be resolved by retrying later.</remarks>
+    /// <param name="Message">The error message.</param>
+    [PublicAPI]
+    public sealed record class RobotError(string Message) : ResultError(Message);
 }

@@ -115,7 +115,7 @@ namespace Tafs.Activities.ActivityBase.Expressions
 
             try
             {
-                UnaryExpression binaryExpression = Expression.MakeUnary(operatorType, t1Expression, null);
+                UnaryExpression binaryExpression = Expression.MakeUnary(operatorType, t1Expression, typeof(T1));
                 Expression<Func<T1, TResult>> lambdaExpression = Expression.Lambda<Func<T1, TResult>>(binaryExpression, t1Expression);
                 func = lambdaExpression.Compile();
 
@@ -129,12 +129,12 @@ namespace Tafs.Activities.ActivityBase.Expressions
         }
 
         /// <summary>
-        /// Tries to generate a unary expression.
+        /// Tries to generate a binary expression.
         /// </summary>
         /// <typeparam name="T1">The left operand.</typeparam>
         /// <typeparam name="T2">The right operand.</typeparam>
         /// <typeparam name="TResult">The output type, typically the same as <typeparamref name="T1"/>.</typeparam>
-        /// <param name="operatorType">The type of operator. Only unary operators are accepted.</param>
+        /// <param name="operatorType">The type of operator. Only binary operators are accepted.</param>
         /// <param name="func">The function to generate.</param>
         /// <param name="validationError">If any errors occurred, this value will be null.</param>
         /// <returns><see langword="true"/> when successful; otherwise, <see langword="false"/>.</returns>
@@ -161,6 +161,44 @@ namespace Tafs.Activities.ActivityBase.Expressions
             catch (Exception e)
             {
                 validationError = new ValidationError(e.Message);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Tries to generate a binary Linq expression.
+        /// </summary>
+        /// <typeparam name="TLeft">The left operand.</typeparam>
+        /// <typeparam name="TRight">The right operand.</typeparam>
+        /// <typeparam name="TResult">The output type, typically the same as <typeparamref name="TLeft"/>.</typeparam>
+        /// <param name="operatorType">The type of operator. Only binary operators are accepted.</param>
+        /// <param name="function">The function to generate.</param>
+        /// <param name="validationError">If any errors occurred, this value will not be null.</param>
+        /// <returns><see langword="true"/> when successful; otherwise, <see langword="false"/>.</returns>
+        public static bool TryGenerateLinqDelegate<TLeft, TRight, TResult>
+        (
+            ExpressionType operatorType,
+            out Func<TLeft, TRight, TResult> function,
+            out ValidationError validationError
+        )
+        {
+            function = null!;
+            validationError = null!;
+
+            ParameterExpression leftParameter = Expression.Parameter(typeof(TLeft), "left");
+            ParameterExpression rightParameter = Expression.Parameter(typeof(TRight), "right");
+
+            try
+            {
+                BinaryExpression binaryExpression = Expression.MakeBinary(operatorType, leftParameter, rightParameter);
+                Expression<Func<TLeft, TRight, TResult>> lambdaExpression = Expression.Lambda<Func<TLeft, TRight, TResult>>(binaryExpression, leftParameter, rightParameter);
+                function = lambdaExpression.Compile();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                validationError = new ValidationError(ex.Message);
                 return false;
             }
         }

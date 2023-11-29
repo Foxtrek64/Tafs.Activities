@@ -1,0 +1,69 @@
+﻿<ContentControl x:Class="Tafs.Activities.Extensions.Design.ActivityDecoratorControl"
+                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                xmlns:sapv="clr-namespace:System.Activities.Presentation.View;assembly=System.Activities.Presentation"
+                xmlns:sap="clr-namespace:System.Activities.Presentation;assembly=System.Activities.Presentation">
+    <ContentControl.Template>
+        <ControlTemplate>
+            <Grid>
+                <TextBlock x:Name="ExpandText" HorizontalAlignment="Center" FontStyle="Italic" Foreground="#FF6D6D6D" Text="Double Click To View">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="TextBlock.Visibility" Value="Visible" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=ShowExpanded}" Value="true">
+                                    <Setter Property="TextBlock.Visibility" Value="Collapsed" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+                <Border>
+                    <ContentPresenter MinWidth="300" />
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Setter Property="Visibility" Value="Visible" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=ShowExpanded}" Value="false">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
+                </Border>
+            </Grid>
+        </ControlTemplate>
+    </ContentControl.Template>
+    
+    <ContentControl.Resources>
+        <Style TargetType="{x:Type sapv:ExpressionTextBox}">
+            <Setter Property="Height" Value="23" />
+            <Setter Property="VerticalContentAlignment" Value="Stretch" />
+            <Setter Property="MaxLines" Value="1" />
+        </Style>
+
+
+        <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource {x:Type ComboBox}}">
+            <Setter Property="Height" Value="23" />
+        </Style>
+
+        <Style BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" TargetType="Button">
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="BorderBrush" Value="#D0D7E2" />
+            <Setter Property="Height" Value="23" />
+        </Style>
+
+        <Style TargetType="{x:Type ComboBox}" x:Key="NonEditableComboboxStyle" BasedOn="{StaticResource {x:Type ComboBox}}">
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="ScrollViewer.CanContentScroll" Value="True"/>
+            <Setter Property="FrameworkElement.FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="BorderBrush" Value="#D0D7E2"/>
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Height" Value="23" />
+        </Style>
+    </ContentControl.Resources>
+    
+</ContentControl>

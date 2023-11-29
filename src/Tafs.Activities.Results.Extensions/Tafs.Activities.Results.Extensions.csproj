@@ -5,9 +5,9 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <VersionPrefix>2.1.0</VersionPrefix>
+    <VersionPrefix>2.2.0</VersionPrefix>
     <Description>Provides an extended set of errors for Tafs.Activities.Results and Remora.Results.</Description>
-    <PackageReleaseNotes>Re-release as Remora.Sdk.</PackageReleaseNotes>
+    <PackageReleaseNotes>Add RobotError type.</PackageReleaseNotes>
     <PackageTags>$(PackageTags);UiPath;Activities;Remora;Result;</PackageTags>
   </PropertyGroup>
 
@@ -16,8 +16,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Remora.Results" Version="7.2.3" />
-    <PackageReference Include="Remora.Results.Analyzers" Version="1.0.0" />
+    <PackageReference Include="Remora.Results" Version="7.4.1" />
+    <PackageReference Include="Remora.Results.Analyzers" Version="1.0.2" />
   </ItemGroup>
 
 </Project>

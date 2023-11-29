@@ -1,18 +1,26 @@
 ﻿<Project Sdk="Remora.Tests.Sdk">
 
   <PropertyGroup>
-    <LibraryFrameworks>net48</LibraryFrameworks>
+    <LibraryFrameworks>net7.0</LibraryFrameworks>
   </PropertyGroup>
 
   <PropertyGroup>
     <ExcludeTestsFromCoverage>false</ExcludeTestsFromCoverage>
   </PropertyGroup>
 
-  <ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net461'">
     <Reference Include="System.Activities" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net7.0'">
+    <PackageReference Include="UiPath.Workflow" Version="6.0.3" />
   </ItemGroup>
   
   <ItemGroup>
     <ProjectReference Include="..\..\src\Tafs.Activities.ActivityBase\Tafs.Activities.ActivityBase.csproj" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Folder Include="Helpers\" />
   </ItemGroup>
 </Project>

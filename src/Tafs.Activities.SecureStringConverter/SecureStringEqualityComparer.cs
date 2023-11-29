@@ -25,12 +25,14 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Security;
+using JetBrains.Annotations;
 
 namespace Tafs.Activities.SecureStringConverter
 {
     /// <summary>
     /// Defines an <see cref="EqualityComparer{T}"/> for the <see cref="SecureString"/> type.
     /// </summary>
+    [PublicAPI]
     public sealed class SecureStringEqualityComparer : IEqualityComparer<SecureString>
     {
         /// <inheritdoc/>
@@ -90,23 +92,14 @@ namespace Tafs.Activities.SecureStringConverter
         /// <inheritdoc/>
         public int GetHashCode([DisallowNull] SecureString obj)
         {
-            IntPtr marshalHandle = IntPtr.Zero;
             var hashCode = default(HashCode);
-            try
+
+            foreach (byte i in obj)
             {
-                marshalHandle = Marshal.SecureStringToBSTR(obj);
-                int length = Marshal.ReadInt32(marshalHandle, -4);
-                for (int i = 0; i < length; i++)
-                {
-                    hashCode.Add(Marshal.ReadByte(marshalHandle, i));
-                }
-            }
-            finally
-            {
-                Marshal.ZeroFreeBSTR(marshalHandle);
+                hashCode.Add(i);
             }
 
-            return hashCode.GetHashCode();
+            return hashCode.ToHashCode();
         }
     }
 }
