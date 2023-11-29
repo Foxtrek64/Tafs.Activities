@@ -1,21 +1,13 @@
 ﻿<sap:ActivityDesigner x:Class="Tafs.Activities.Extensions.Design.Statements.AddToDictionaryDesign"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:s="clr-namespace:System;assembly=mscorlib"
     xmlns:src="clr-namespace:Tafs.Activities.Extensions.Design"
-    xmlns:collections="clr-namespace:System.Collections.Generic;assembly=System.Runtime"
     xmlns:sap="clr-namespace:System.Activities.Presentation;assembly=System.Activities.Presentation"
     xmlns:sapv="clr-namespace:System.Activities.Presentation.View;assembly=System.Activities.Presentation"
-    xmlns:sapc="clr-namespace:System.Activities.Presentation.Converters;assembly=System.Activities.Presentation"
-    xmlns:statements="clr-namespace:Tafs.Activities.Extensions.Statements">
+    xmlns:sapc="clr-namespace:System.Activities.Presentation.Converters;assembly=System.Activities.Presentation">
 
     <sap:ActivityDesigner.Resources>
-        <ResourceDictionary>
-            <sapc:ArgumentToExpressionConverter x:Key="ArgumentToExpressionConverter" />
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Design/Themes/Generic.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
+        <sapc:ArgumentToExpressionConverter x:Key="ArgumentToExpressionConverter" />
     </sap:ActivityDesigner.Resources>
 
     <sap:ActivityDesigner.Icon>
@@ -27,7 +19,7 @@
         </DrawingBrush>
     </sap:ActivityDesigner.Icon>
 
-    <src:ActivityDecoratorControl Style="{StaticResource ActivityDecoratorStyle}">
+    <src:ActivityDecoratorControl>
         <DockPanel Width="300">
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -40,20 +32,23 @@
                     <RowDefinition />
                 </Grid.RowDefinitions>
 
-                <TextBlock Grid.Row="0" Grid.Column="0" Padding="0 0 10 0">Database</TextBlock>
-                <sapv:ExpressionTextBox Grid.Row="0" Grid.Column="1" Expression="{Binding Path=ModelItem.Database, Converter={StaticResource ArgumentToExpressionConverter}, Mode=TwoWay, ConverterParameter=In}"
-                            OwnerActivity="{Binding Path=ModelItem}" ExpressionType="{x:Type collections:IDictionary`2}" Height="23"
-                            DockPanel.Dock="Left" HintText="The dictionary to modify."/>
+                <TextBlock Grid.Row="0" Grid.Column="0" Padding="0 0 10 0">Dictionary</TextBlock>
+                <sapv:ExpressionTextBox Grid.Row="0" Grid.Column="1" HintText="The dictionary to modify." Width="300" Margin="0,5" MaxLines="1"
+                                        Expression="{Binding Path=ModelItem.Dictionary, Converter={StaticResource ArgumentToExpressionConverter}, Mode=TwoWay, ConverterParameter=In}"
+                                        OwnerActivity="{Binding Path=ModelItem}"
+                                        ExpressionType="{Binding Path=DictionaryType, Mode=OneWay}"/>
 
                 <TextBlock Grid.Row="1" Grid.Column="0">Key</TextBlock>
-                <sapv:ExpressionTextBox Grid.Row="1" Grid.Column="1" Expression="{Binding Path=ModelItem.Key, Converter={StaticResource ArgumentToExpressionConverter}, Mode=TwoWay, ConverterParameter=In}"
-                            OwnerActivity="{Binding Path=ModelItem}" Height="23"
-                            DockPanel.Dock="Left" HintText="The key to add to the database." />
+                <sapv:ExpressionTextBox Grid.Row="1" Grid.Column="1" HintText="The key to add to the database." Width="300" Margin="0,5" MaxLines="1"
+                                        Expression="{Binding Path=ModelItem.Key, Converter={StaticResource ArgumentToExpressionConverter}, Mode=TwoWay, ConverterParameter=In}"
+                                        OwnerActivity="{Binding Path=ModelItem}"
+                                        ExpressionType="{Binding Path=KeyType, Mode=OneWay}" />
 
                 <TextBlock Grid.Row="2" Grid.Column="0">Value</TextBlock>
-                <sapv:ExpressionTextBox Grid.Row="2" Grid.Column="1" Expression="{Binding Path=ModelItem.Value, Converter={StaticResource ArgumentToExpressionConverter}, Mode=TwoWay, ConverterParameter=In}"
-                OwnerActivity="{Binding Path=ModelItem}" Height="23"
-                DockPanel.Dock="Left" HintText="The value to add to the database." />
+                <sapv:ExpressionTextBox Grid.Row="2" Grid.Column="1" HintText="The value to add to the database." Width="300" Margin="0,5" MaxLines="1"
+                                        Expression="{Binding Path=ModelItem.Value, Converter={StaticResource ArgumentToExpressionConverter}, Mode=TwoWay, ConverterParameter=In}"
+                                        OwnerActivity="{Binding Path=ModelItem}"
+                                        ExpressionType="{Binding Path=ValueType, Mode=OneWay}" />
 
             </Grid>
         </DockPanel>
