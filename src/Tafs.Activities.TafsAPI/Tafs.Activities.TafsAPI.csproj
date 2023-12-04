@@ -1,13 +1,13 @@
 ﻿<Project Sdk="Remora.Sdk">
 
   <PropertyGroup>
-    <LibraryFrameworks>net461;net6.0;net7.0</LibraryFrameworks>
+    <LibraryFrameworks>net461;net6.0;net7.0;net8.0</LibraryFrameworks>
   </PropertyGroup>
 
   <PropertyGroup>
-    <VersionPrefix>0.1.0</VersionPrefix>
+    <VersionPrefix>0.1.1</VersionPrefix>
     <ProjectDescription>Provides a set of models and helper libraries for interfacing with the TAFS API.</ProjectDescription>
-    <PackageReleaseNotes>Remove netstandard target. Add some modern models.</PackageReleaseNotes>
+    <PackageReleaseNotes>Add Net8 target.</PackageReleaseNotes>
     <PackageTags>$(PackageTags);Tafs-API</PackageTags>
   </PropertyGroup>
 

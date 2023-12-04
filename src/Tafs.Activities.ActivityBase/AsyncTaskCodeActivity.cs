@@ -31,6 +31,9 @@ namespace Tafs.Activities.ActivityBase
     /// <summary>
     /// A base type for creating an asyncronous <see cref="Activity"/> using the TPL.
     /// </summary>
+#if NET6_0_OR_GREATER
+    [Obsolete("Please use the build-in AsyncTaskCodeActivity from System.Activities.")]
+#endif
     public abstract class AsyncTaskCodeActivity : AsyncCodeActivity
     {
         /// <inheritdoc/>

@@ -5,10 +5,11 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <VersionPrefix>2.2.0</VersionPrefix>
+    <VersionPrefix>2.2.1</VersionPrefix>
     <ProjectDescription>Provides extended base types for custom activities.</ProjectDescription>
     <PackageReleaseNotes>Add net6.0 target.</PackageReleaseNotes>
     <PackageTags>$(PackageTags);UiPath;Activities;</PackageTags>
+    <PackageDeprecated>true</PackageDeprecated>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net461'">

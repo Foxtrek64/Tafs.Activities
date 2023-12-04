@@ -4,15 +4,11 @@
 		<LegalEmail>dduanne@tafs.com</LegalEmail>
     <Company>TAFS, LLC.</Company>
     <LegalCopyrightHolder>TAFS, LLC.</LegalCopyrightHolder>
-    <Description>
-      $(ProjectDescription)
-
-      New in $(VersionPrefix)$(VersionSuffix): $(PackageReleaseNotes)
-    </Description>
 	</PropertyGroup>
 
 	<PropertyGroup>
 		<SolutionDir>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)/))</SolutionDir>
+    <ProjectDeprecated>false</ProjectDeprecated>
 	</PropertyGroup>
 
   <PropertyGroup>

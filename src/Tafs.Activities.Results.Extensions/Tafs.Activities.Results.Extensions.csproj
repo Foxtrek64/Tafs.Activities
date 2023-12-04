@@ -1,13 +1,13 @@
 ﻿<Project Sdk="Remora.Sdk">
 
   <PropertyGroup>
-    <LibraryFrameworks>net461;netstandard2.1;net6.0;net7.0</LibraryFrameworks>
+    <LibraryFrameworks>net461;netstandard2.1;net6.0;net7.0;net8.0</LibraryFrameworks>
   </PropertyGroup>
 
   <PropertyGroup>
-    <VersionPrefix>2.2.0</VersionPrefix>
+    <VersionPrefix>2.2.1</VersionPrefix>
     <Description>Provides an extended set of errors for Tafs.Activities.Results and Remora.Results.</Description>
-    <PackageReleaseNotes>Add RobotError type.</PackageReleaseNotes>
+    <PackageReleaseNotes>Add Net8 target.</PackageReleaseNotes>
     <PackageTags>$(PackageTags);UiPath;Activities;Remora;Result;</PackageTags>
   </PropertyGroup>
 
