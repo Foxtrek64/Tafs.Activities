@@ -9,6 +9,7 @@
     <ProjectDescription>Provides a set of UiPath activities for interfacing with the TAFS API.</ProjectDescription>
     <PackageReleaseNotes>Add Net8 target.</PackageReleaseNotes>
     <PackageTags>$(PackageTags);Tafs-API;UiPath</PackageTags>
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net461'">

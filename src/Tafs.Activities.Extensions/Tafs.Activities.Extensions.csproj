@@ -17,4 +17,8 @@
     <PackageReference Include="UiPath.Workflow" Version="6.0.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Tafs.Activities.SecureStringConverter\Tafs.Activities.SecureStringConverter.csproj" />
+  </ItemGroup>
+
 </Project>
