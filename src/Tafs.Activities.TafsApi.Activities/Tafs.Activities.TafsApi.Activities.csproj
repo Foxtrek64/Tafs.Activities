@@ -1,37 +1,31 @@
 ﻿<Project Sdk="Remora.Sdk">
 
   <PropertyGroup>
-    <LibraryFrameworks>net461;net6.0;net7.0;net8.0</LibraryFrameworks>
+    <LibraryFrameworks>net6.0;net7.0;net8.0</LibraryFrameworks>
   </PropertyGroup>
 
   <PropertyGroup>
-    <VersionPrefix>0.1.1</VersionPrefix>
+    <VersionPrefix>0.2.1</VersionPrefix>
     <ProjectDescription>Provides a set of UiPath activities for interfacing with the TAFS API.</ProjectDescription>
-    <PackageReleaseNotes>Add Net8 target.</PackageReleaseNotes>
+    <PackageReleaseNotes>Remove net461 target..</PackageReleaseNotes>
     <PackageTags>$(PackageTags);Tafs-API;UiPath</PackageTags>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'net461'">
-    <Reference Include="System.Activities" />
-    <PackageReference Include="PolySharp" Version="1.13.2">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <ProjectReference Include="..\Tafs.Activities.ActivityBase\Tafs.Activities.ActivityBase.csproj" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' != 'net461'">
-    <PackageReference Include="UiPath.Workflow" Version="6.0.3" />
-  </ItemGroup>
-
   <ItemGroup>
+    <PackageReference Include="UiPath.Workflow" Version="6.0.3" />
     <PackageReference Include="Microsoft.Bcl.HashCode" Version="1.1.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Remora.Results" Version="7.4.1" />
+    <PackageReference Include="Remora.Results.Analyzers" Version="1.0.2" />
+    <PackageReference Include="Remora.Rest.Core" Version="2.2.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Tafs.Activities.TafsAPI\Tafs.Activities.TafsAPI.csproj" />
+    <ProjectReference Include="..\Tafs.Activities.TafsAPI\Tafs.Activities.TafsAPI.csproj">
+      <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
+      <IncludeAssets>{ProjectName}.dll</IncludeAssets>
+    </ProjectReference>
   </ItemGroup>
 
 </Project>

@@ -20,7 +20,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Tafs.Activities.Extensions\Tafs.Activities.Extensions.csproj" />
+    <ProjectReference Include="..\Tafs.Activities.Extensions\Tafs.Activities.Extensions.csproj">
+      <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
+      <IncludeAssets>Tafs.Activities.Extensions.dll</IncludeAssets>
+    </ProjectReference>
   </ItemGroup>
 
 </Project>

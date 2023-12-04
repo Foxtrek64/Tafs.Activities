@@ -28,20 +28,12 @@ using System.Threading.Tasks;
 using Tafs.Activities.TafsAPI.Models.Modern;
 using Tafs.Activities.TafsAPI.Models.Modern.Invoices;
 
-#if NET461_OR_GREATER
-using ActivityBase = Tafs.Activities.ActivityBase;
-#else
-using ActivityBase = System.Activities;
-#endif
-
-#pragma warning disable SA1206 // required goes after public
-
 namespace Tafs.Activities.TafsApi.Activities.Invoices
 {
     /// <summary>
     /// Makes a call to api/invoices/{page_number}/{page_size}/{tab}.
     /// </summary>
-    public sealed class GetInvoices : ActivityBase.AsyncTaskCodeActivity<ApiResult<InvoiceList[]>>
+    public sealed class GetInvoices : AsyncTaskCodeActivity<ApiResult<InvoiceList[]>>
     {
         /// <summary>
         /// Gets or sets the access key used to identify the calling process.

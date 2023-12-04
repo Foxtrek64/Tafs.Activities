@@ -20,14 +20,9 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-using System;
 using System.Activities;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Security;
-using System.Text;
-using System.Threading.Tasks;
 using Tafs.Activities.SecureStringConverter;
 
 namespace Tafs.Activities.Extensions.Statements

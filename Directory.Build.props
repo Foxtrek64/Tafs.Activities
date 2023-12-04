@@ -18,6 +18,7 @@
     <PackageProjectUrl>https://github.com/TA-RPA/Tafs.Activities</PackageProjectUrl>
     <PackageOutputPath>$(SolutionDir)/nuget</PackageOutputPath>
     <PackageTags>TAFS;RPA;UiPath</PackageTags>
+    <PackageIconPath>$(SolutionDir)/bot_logo.png</PackageIconPath>
   </PropertyGroup>
 
 </Project>
