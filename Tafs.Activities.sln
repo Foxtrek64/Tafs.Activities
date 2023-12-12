@@ -49,7 +49,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tafs.Activities.Finance.Tes
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tafs.Activities.Extensions", "src\Tafs.Activities.Extensions\Tafs.Activities.Extensions.csproj", "{7B4DA626-F437-4D53-976D-6A4450F1F63C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tafs.Activities.Extensions.Design", "src\Tafs.Activities.Extensions.Design\Tafs.Activities.Extensions.Design.csproj", "{A78C3A95-62F0-42BA-B87F-AE83D2AA9FD6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tafs.Activities.Extensions.Design", "src\Tafs.Activities.Extensions.Design\Tafs.Activities.Extensions.Design.csproj", "{A78C3A95-62F0-42BA-B87F-AE83D2AA9FD6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

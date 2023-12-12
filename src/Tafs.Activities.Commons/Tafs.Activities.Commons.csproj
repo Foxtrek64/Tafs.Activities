@@ -1,14 +1,18 @@
 ﻿<Project Sdk="Remora.Sdk">
 
   <PropertyGroup>
-    <LibraryFrameworks>net461;netstandard2.1;net6.0;net7.0;net8.0</LibraryFrameworks>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <VersionPrefix>0.2.1</VersionPrefix>
-    <PackageReleaseNotes>Add Net8 target.</PackageReleaseNotes>
-    <Description>Provides a set of common extensions and other unsorted code.</Description>
+    <VersionPrefix>0.3.0</VersionPrefix>
+    <PackageReleaseNotes>Reset to standard Remora.Sdk targets.</PackageReleaseNotes>
+    <Description>Provides a set of common extensions and other unsorted code. Add IEnumerable&lt;Rune&gt;.AsString().</Description>
     <PackageTags>$(PackageTags)</PackageTags>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Helpers\" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">
+    <PackageReference Include="Shim.System.Text.Rune" Version="6.0.2" />
+  </ItemGroup>
 
 </Project>

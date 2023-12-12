@@ -40,8 +40,10 @@ namespace Tafs.Activities.Commons.Extensions
         /// <param name="table">The datatable to process.</param>
         /// <param name="rowNumbers">If <see langword="true"/>, will add an extra column on the left with the current row number.</param>
         /// <param name="border">If <see langword="true"/>, will draw a border with ASCII characters; otherwise, will only draw a separator between header and rows.</param>
-        public static void AsAsciiTable(this DataTable table, bool rowNumbers = false, bool border = true)
+        // TODO: Visibility is set private so the method is not visible until it is complete.
+        private static void AsAsciiTable(this DataTable table, bool rowNumbers = false, bool border = true)
         {
+            throw new NotImplementedException(); // Thrown in case they find it anyways.
             static string GetSeparatorRow(int[] lengths, char left, char middle, char right, char horizontal)
             {
                 StringBuilder rowBuilder = new();
