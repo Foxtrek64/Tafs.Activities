@@ -35,23 +35,13 @@ namespace Tafs.Activities.Extensions.Expressions
     /// </summary>
     public sealed class UnaryExpressionHelper
     {
-        /// <summary>
-        /// Binds the metadata for the argument.
-        /// </summary>
-        /// <typeparam name="TOperand">The type of the argument.</typeparam>
-        /// <param name="metadata">The metadata.</param>
-        /// <param name="operand">The argument.</param>
+        /// <inheritdoc cref="OnGetArgumentsBase{TOperand}(CodeActivityMetadata, Argument, ArgumentDirection)"/>
         public static void OnGetArguments<TOperand>(CodeActivityMetadata metadata, InArgument<TOperand> operand)
-        {
-            RuntimeArgument operandArgument = new("Operand", typeof(TOperand), ArgumentDirection.In, true);
-            metadata.Bind(operand, operandArgument);
+            => OnGetArgumentsBase<TOperand>(metadata, operand, ArgumentDirection.In);
 
-            metadata.SetArgumentsCollection(
-                new Collection<RuntimeArgument>
-                {
-                    operandArgument
-                });
-        }
+        /// <inheritdoc cref="OnGetArgumentsBase{TOperand}(CodeActivityMetadata, Argument, ArgumentDirection)"/>
+        public static void OnGetArguments<TOperand>(CodeActivityMetadata metadata, InOutArgument<TOperand> operand)
+            => OnGetArgumentsBase<TOperand>(metadata, operand, ArgumentDirection.InOut);
 
         /// <summary>
         /// Binds the metadata for the argument.
@@ -59,16 +49,15 @@ namespace Tafs.Activities.Extensions.Expressions
         /// <typeparam name="TOperand">The type of the argument.</typeparam>
         /// <param name="metadata">The metadata.</param>
         /// <param name="operand">The argument.</param>
-        public static void OnGetArguments<TOperand>(CodeActivityMetadata metadata, InOutArgument<TOperand> operand)
+        public static void OnGetArgumentsBase<TOperand>(CodeActivityMetadata metadata, Argument operand, ArgumentDirection argumentDirection)
         {
-            RuntimeArgument operandArgument = new("Operand", typeof(TOperand), ArgumentDirection.InOut, true);
+            RuntimeArgument operandArgument = new("Operand", typeof(TOperand), argumentDirection, true);
             metadata.Bind(operand, operandArgument);
 
             metadata.SetArgumentsCollection(
-                new Collection<RuntimeArgument>
-                {
+                [
                     operandArgument
-                });
+                ]);
         }
 
         /// <summary>

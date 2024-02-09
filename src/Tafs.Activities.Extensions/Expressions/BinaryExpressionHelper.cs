@@ -23,7 +23,6 @@
 using System;
 using System.Activities;
 using System.Activities.Validation;
-using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 using Tafs.Activities.Extensions.Extensions;
@@ -35,28 +34,21 @@ namespace Tafs.Activities.Extensions.Expressions
     /// </summary>
     internal static class BinaryExpressionHelper
     {
-        /// <summary>
-        /// Binds metadata when getting arguments.
-        /// </summary>
-        /// <typeparam name="TLeft">The type of the left argument.</typeparam>
-        /// <typeparam name="TRight">The type of the right argument.</typeparam>
-        /// <param name="metadata">The metadata.</param>
-        /// <param name="left">The left argument.</param>
-        /// <param name="right">The right argument.</param>
+        /// <inheritdoc cref="OnGetArgumentsBase{TLeft, TRight}(CodeActivityMetadata, Argument, ArgumentDirection, Argument, ArgumentDirection)"/>
         public static void OnGetArguments<TLeft, TRight>(CodeActivityMetadata metadata, InArgument<TLeft> left, InArgument<TRight> right)
-        {
-            RuntimeArgument rightArgument = new("Right", typeof(TRight), ArgumentDirection.In, true);
-            metadata.Bind(right, rightArgument);
+            => OnGetArgumentsBase<TLeft, TRight>(metadata, left, ArgumentDirection.In, right, ArgumentDirection.In);
 
-            RuntimeArgument leftArgument = new("Left", typeof(TLeft), ArgumentDirection.In, true);
-            metadata.Bind(left, leftArgument);
+        /// <inheritdoc cref="OnGetArgumentsBase{TLeft, TRight}(CodeActivityMetadata, Argument, ArgumentDirection, Argument, ArgumentDirection)"/>
+        public static void OnGetArguments<TLeft, TRight>(CodeActivityMetadata metadata, InOutArgument<TLeft> left, InArgument<TRight> right)
+            => OnGetArgumentsBase<TLeft, TRight>(metadata, left, ArgumentDirection.InOut, right, ArgumentDirection.In);
 
-            metadata.SetArgumentsCollection(new Collection<RuntimeArgument>
-            {
-                rightArgument,
-                leftArgument
-            });
-        }
+        /// <inheritdoc cref="OnGetArgumentsBase{TLeft, TRight}(CodeActivityMetadata, Argument, ArgumentDirection, Argument, ArgumentDirection)"/>
+        public static void OnGetArguments<TLeft, TRight>(CodeActivityMetadata metadata, InArgument<TLeft> left, InOutArgument<TRight> right)
+            => OnGetArgumentsBase<TLeft, TRight>(metadata, left, ArgumentDirection.In, right, ArgumentDirection.InOut);
+
+        /// <inheritdoc cref="OnGetArgumentsBase{TLeft, TRight}(CodeActivityMetadata, Argument, ArgumentDirection, Argument, ArgumentDirection)"/>
+        public static void OnGetArguments<TLeft, TRight>(CodeActivityMetadata metadata, InOutArgument<TLeft> left, InOutArgument<TRight> right)
+            => OnGetArgumentsBase<TLeft, TRight>(metadata, left, ArgumentDirection.InOut, right, ArgumentDirection.InOut);
 
         /// <summary>
         /// Binds metadata when getting arguments.
@@ -65,20 +57,29 @@ namespace Tafs.Activities.Extensions.Expressions
         /// <typeparam name="TRight">The type of the right argument.</typeparam>
         /// <param name="metadata">The metadata.</param>
         /// <param name="left">The left argument.</param>
+        /// <param name="leftDirection">The direction of <paramref name="left"/>.</param>
         /// <param name="right">The right argument.</param>
-        public static void OnGetArguments<TLeft, TRight>(CodeActivityMetadata metadata, InOutArgument<TLeft> left, InOutArgument<TRight> right)
+        /// <param name="rightDirection">The direction of <paramref name="right"/>.</param>
+        internal static void OnGetArgumentsBase<TLeft, TRight>
+        (
+            CodeActivityMetadata metadata,
+            Argument left,
+            ArgumentDirection leftDirection,
+            Argument right,
+            ArgumentDirection rightDirection
+        )
         {
-            RuntimeArgument rightArgument = new("Right", typeof(TRight), ArgumentDirection.InOut, true);
+            RuntimeArgument rightArgument = new("Right", typeof(TRight), rightDirection, true);
             metadata.Bind(right, rightArgument);
 
-            RuntimeArgument leftArgument = new("Left", typeof(TLeft), ArgumentDirection.InOut, true);
+            RuntimeArgument leftArgument = new("Left", typeof(TLeft), leftDirection, true);
             metadata.Bind(left, leftArgument);
 
-            metadata.SetArgumentsCollection(new Collection<RuntimeArgument>
-            {
+            metadata.SetArgumentsCollection(
+            [
                 rightArgument,
                 leftArgument
-            });
+            ]);
         }
 
         /// <summary>
