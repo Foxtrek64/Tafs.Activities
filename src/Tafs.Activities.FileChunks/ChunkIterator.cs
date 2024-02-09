@@ -33,7 +33,7 @@ namespace Tafs.Activities.FileChunks
     /// <summary>
     /// Provides an iterator for itering through chunks in a file.
     /// </summary>
-    public class ChunkIterator : IEnumerable<string>, IAsyncEnumerable<string>, IDisposable
+    public class ChunkIterator : IEnumerable<Chunk>, IAsyncEnumerable<Chunk>, IDisposable
     {
         private readonly FileInfo _file;
         private readonly long _fileLength;
@@ -87,14 +87,14 @@ namespace Tafs.Activities.FileChunks
         }
 
         /// <inheritdoc/>
-        public IEnumerator<string> GetEnumerator()
+        public IEnumerator<Chunk> GetEnumerator()
             => GetChunkEnumerator(_chunks, _memoryMappedFile);
 
         /// <summary>
         /// Gets a reversed chunk enumerator.
         /// </summary>
         /// <returns>An <see cref="IEnumerable{T}"/>.</returns>
-        public IEnumerable<string> Reverse()
+        public IEnumerable<Chunk> Reverse()
         {
             _reverseIterator ??= new ReverseChunkIterator(_chunks, _memoryMappedFile);
             return _reverseIterator;
@@ -104,7 +104,7 @@ namespace Tafs.Activities.FileChunks
         /// Gets a reversed chunk enumerator.
         /// </summary>
         /// <returns>An <see cref="IAsyncEnumerable{T}"/>.</returns>
-        public IAsyncEnumerable<string> ReverseAsync()
+        public IAsyncEnumerable<Chunk> ReverseAsync()
         {
             _reverseIterator ??= new ReverseChunkIterator(_chunks, _memoryMappedFile);
             return _reverseIterator;
@@ -116,7 +116,7 @@ namespace Tafs.Activities.FileChunks
         /// <param name="chunks">The chunks to enumerate.</param>
         /// <param name="memoryMappedFile">The MMF to inspect.</param>
         /// <returns>An <see cref="IEnumerator{T}"/> for the chunk text.</returns>
-        internal static IEnumerator<string> GetChunkEnumerator(Dictionary<long, long> chunks, MemoryMappedFile memoryMappedFile)
+        internal static IEnumerator<Chunk> GetChunkEnumerator(Dictionary<long, long> chunks, MemoryMappedFile memoryMappedFile)
         {
             foreach (var (offset, length) in chunks)
             {
@@ -125,13 +125,14 @@ namespace Tafs.Activities.FileChunks
                 var chunkBytes = new byte[streamer.Length];
                 streamer.Read(chunkBytes, 0, chunkBytes.Length);
                 var lines = Encoding.UTF8.GetString(chunkBytes);
+                var chunk = new Chunk(offset, length, lines);
 
-                yield return lines;
+                yield return chunk;
             }
         }
 
         /// <inheritdoc/>
-        public IAsyncEnumerator<string> GetAsyncEnumerator(CancellationToken cancellationToken = default)
+        public IAsyncEnumerator<Chunk> GetAsyncEnumerator(CancellationToken cancellationToken = default)
             => GetAsyncChunkEnumerator(_chunks, _memoryMappedFile, cancellationToken);
 
         /// <summary>
@@ -141,7 +142,7 @@ namespace Tafs.Activities.FileChunks
         /// <param name="memoryMappedFile">The MMF to inspect.</param>
         /// <param name="cancellationToken">The cancellation token for this operation.</param>
         /// <returns>An <see cref="IAsyncEnumerator{T}"/> for the chunk text.</returns>
-        internal static async IAsyncEnumerator<string> GetAsyncChunkEnumerator
+        internal static async IAsyncEnumerator<Chunk> GetAsyncChunkEnumerator
         (
             Dictionary<long, long> chunks,
             MemoryMappedFile memoryMappedFile,
@@ -155,8 +156,9 @@ namespace Tafs.Activities.FileChunks
                 var chunkBytes = new byte[streamer.Length];
                 _ = await streamer.ReadAsync(chunkBytes, cancellationToken);
                 var lines = Encoding.UTF8.GetString(chunkBytes);
+                var chunk = new Chunk(offset, length, lines);
 
-                yield return lines;
+                yield return chunk;
             }
         }
 

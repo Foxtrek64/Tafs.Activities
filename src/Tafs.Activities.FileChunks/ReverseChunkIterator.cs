@@ -32,7 +32,7 @@ namespace Tafs.Activities.FileChunks
     /// <summary>
     /// Iterates chunks in reverse.
     /// </summary>
-    internal class ReverseChunkIterator : IEnumerable<string>, IAsyncEnumerable<string>
+    internal class ReverseChunkIterator : IEnumerable<Chunk>, IAsyncEnumerable<Chunk>
     {
         private readonly Dictionary<long, long> _reverseChunks;
         private readonly MemoryMappedFile _mmf;
@@ -49,7 +49,7 @@ namespace Tafs.Activities.FileChunks
         }
 
         /// <inheritdoc/>
-        public IEnumerator<string> GetEnumerator()
+        public IEnumerator<Chunk> GetEnumerator()
             => ChunkIterator.GetChunkEnumerator(_reverseChunks, _mmf);
 
         /// <inheritdoc/>
@@ -57,7 +57,7 @@ namespace Tafs.Activities.FileChunks
             => GetEnumerator();
 
         /// <inheritdoc/>
-        public IAsyncEnumerator<string> GetAsyncEnumerator(CancellationToken cancellationToken = default)
+        public IAsyncEnumerator<Chunk> GetAsyncEnumerator(CancellationToken cancellationToken = default)
             => ChunkIterator.GetAsyncChunkEnumerator(_reverseChunks, _mmf, cancellationToken);
     }
 }
