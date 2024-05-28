@@ -21,4 +21,8 @@
     <PackageIconPath>$(SolutionDir)/bot_logo.png</PackageIconPath>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Update="StyleCop.Analyzers" Version="1.2.0-beta.556" />
+  </ItemGroup>
+
 </Project>

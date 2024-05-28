@@ -1,5 +1,5 @@
 ﻿//
-//  ValidationError.cs
+//  INode.cs
 //
 //  Author:
 //       Devin Duanne <dduanne@tafs.com>
@@ -20,30 +20,39 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-using Remora.Results;
+using System.Collections.Generic;
+using JetBrains.Annotations;
 
-namespace Tafs.Activities.Results.Extensions.Errors
+namespace Tafs.Activities.MiniMessage.Models.Tree
 {
     /// <summary>
-    /// Represents an error that occurred as a result of validation.
+    /// Defines a node in a MiniMessage parse tree.
     /// </summary>
-    /// <param name="Message">The reason validation failed.</param>
-    public sealed record class ValidationError(string Message) : ResultError(Message)
+    [PublicAPI]
+    internal interface INode
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ValidationError"/> class.
+        /// Gets the parent node or null if this is the top-most node.
         /// </summary>
-        /// <param name="expected">The expected value.</param>
-        /// <param name="actual">The actual value.</param>
-        /// <param name="comment">An optional comment to provide additional detail.</param>
-        public ValidationError
-        (
-            string expected,
-            string actual,
-            string? comment = null
-        )
-            : this($"'{expected}' does not equal '{actual}'. {comment ?? string.Empty}".Trim())
+        INode? Parent { get; }
+
+        /// <summary>
+        /// Gets children of this node.
+        /// </summary>
+        /// <returns>A list of child nodes.</returns>
+        [NotNull]
+        IReadOnlyList<INode> GetChildren();
+
+        /// <summary>
+        /// The root node of a parse.
+        /// </summary>
+        public interface IRoot : INode
         {
+            /// <summary>
+            /// Gets the original provided message which produced this node.
+            /// </summary>
+            [NotNull]
+            string Input { get; }
         }
     }
 }

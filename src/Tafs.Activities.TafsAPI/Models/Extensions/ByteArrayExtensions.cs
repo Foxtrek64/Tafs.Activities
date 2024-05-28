@@ -43,7 +43,7 @@ namespace Tafs.Activities.TafsAPI.Models.Extensions
 
             if (size == 0)
             {
-                return Array.Empty<byte>();
+                return []; // Empty array
             }
 
             byte[] arr = new byte[size];

@@ -1,5 +1,5 @@
 ﻿//
-//  ValidationError.cs
+//  IInserting.cs
 //
 //  Author:
 //       Devin Duanne <dduanne@tafs.com>
@@ -20,30 +20,30 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-using Remora.Results;
+using JetBrains.Annotations;
+using Tafs.Activities.MiniMessage.Models.Text;
 
-namespace Tafs.Activities.Results.Extensions.Errors
+namespace Tafs.Activities.MiniMessage.Models.Tag
 {
     /// <summary>
-    /// Represents an error that occurred as a result of validation.
+    /// A tag that inserts a <see cref="Component"/> into the output.
     /// </summary>
-    /// <param name="Message">The reason validation failed.</param>
-    public sealed record class ValidationError(string Message) : ResultError(Message)
+    public interface IInserting : ITag
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ValidationError"/> class.
+        /// Gets the component this tag produces.
         /// </summary>
-        /// <param name="expected">The expected value.</param>
-        /// <param name="actual">The actual value.</param>
-        /// <param name="comment">An optional comment to provide additional detail.</param>
-        public ValidationError
-        (
-            string expected,
-            string actual,
-            string? comment = null
-        )
-            : this($"'{expected}' does not equal '{actual}'. {comment ?? string.Empty}".Trim())
-        {
-        }
+        [NotNull]
+        IComponent Value { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether this tag allows children.
+        /// </summary>
+        /// <remarks>
+        /// If children are not allowed, this tag will be auto-closing and should not
+        /// be closed explicitly. In strict mode, a closing tag will be an error. In
+        /// lenient mode, the closing tag will be interpreted as literal text.
+        /// </remarks>
+        bool AllowsChildren { get => true; }
     }
 }

@@ -5,9 +5,9 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <VersionPrefix>2.2.1</VersionPrefix>
+    <VersionPrefix>2.3.0</VersionPrefix>
     <Description>Provides an extended set of errors for Tafs.Activities.Results and Remora.Results.</Description>
-    <PackageReleaseNotes>Add Net8 target.</PackageReleaseNotes>
+    <PackageReleaseNotes>Add constructor to ValidationError.</PackageReleaseNotes>
     <PackageTags>$(PackageTags);UiPath;Activities;Remora;Result;</PackageTags>
   </PropertyGroup>
 

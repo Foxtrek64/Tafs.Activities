@@ -24,7 +24,7 @@ using System;
 using Newtonsoft.Json;
 using Remora.Rest.Core;
 
-namespace Tafs.Activities.TafsAPI.Models.Modern.Invoices
+namespace Tafs.Activities.TafsAPI.Models.Invoices
 {
     // TODO: Determine the unit of Duration.
     /// <summary>

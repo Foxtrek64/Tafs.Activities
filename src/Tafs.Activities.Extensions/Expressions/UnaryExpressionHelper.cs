@@ -49,6 +49,7 @@ namespace Tafs.Activities.Extensions.Expressions
         /// <typeparam name="TOperand">The type of the argument.</typeparam>
         /// <param name="metadata">The metadata.</param>
         /// <param name="operand">The argument.</param>
+        /// <param name="argumentDirection">Gets the direction of <paramref name="operand"/>.</param>
         public static void OnGetArgumentsBase<TOperand>(CodeActivityMetadata metadata, Argument operand, ArgumentDirection argumentDirection)
         {
             RuntimeArgument operandArgument = new("Operand", typeof(TOperand), argumentDirection, true);
