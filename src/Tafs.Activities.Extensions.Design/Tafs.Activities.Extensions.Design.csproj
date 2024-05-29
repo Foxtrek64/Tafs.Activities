@@ -4,7 +4,6 @@
     <LibraryFrameworks>net6.0-windows;net7.0-windows;net8.0-windows</LibraryFrameworks>
     <TargetNetStandard>false</TargetNetStandard>
     <UseWPF>true</UseWPF>
-    <EnableWindowsTargeting>true</EnableWindowsTargeting>
   </PropertyGroup>
 
   <PropertyGroup>
