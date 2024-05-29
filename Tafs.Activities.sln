@@ -31,7 +31,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{60A9
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{6E69A91F-48FF-4C05-BF7A-9741E63A9FC7}"
 	ProjectSection(SolutionItems) = preProject
-		dotnet-test.yml = dotnet-test.yml
+		.github\workflows\dotnet-test.yml = .github\workflows\dotnet-test.yml
 		.github\workflows\dotnet.yml = .github\workflows\dotnet.yml
 	EndProjectSection
 EndProject
@@ -48,6 +48,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tafs.Activities.Finance.Tests", "tests\Tafs.Activities.Finance.Tests\Tafs.Activities.Finance.Tests.csproj", "{E53006A6-EC0B-4336-ADFB-4F4E77AD3E69}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tafs.Activities.Extensions", "src\Tafs.Activities.Extensions\Tafs.Activities.Extensions.csproj", "{7B4DA626-F437-4D53-976D-6A4450F1F63C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tafs.Activities.Extensions.Design", "src\Tafs.Activities.Extensions.Design\Tafs.Activities.Extensions.Design.csproj", "{A78C3A95-62F0-42BA-B87F-AE83D2AA9FD6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tafs.Activities.FileChunks", "src\Tafs.Activities.FileChunks\Tafs.Activities.FileChunks.csproj", "{ECDAC06A-402A-45A1-9D06-CE7ECAFBA693}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -107,6 +111,14 @@ Global
 		{7B4DA626-F437-4D53-976D-6A4450F1F63C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7B4DA626-F437-4D53-976D-6A4450F1F63C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7B4DA626-F437-4D53-976D-6A4450F1F63C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A78C3A95-62F0-42BA-B87F-AE83D2AA9FD6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A78C3A95-62F0-42BA-B87F-AE83D2AA9FD6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A78C3A95-62F0-42BA-B87F-AE83D2AA9FD6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A78C3A95-62F0-42BA-B87F-AE83D2AA9FD6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ECDAC06A-402A-45A1-9D06-CE7ECAFBA693}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ECDAC06A-402A-45A1-9D06-CE7ECAFBA693}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ECDAC06A-402A-45A1-9D06-CE7ECAFBA693}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ECDAC06A-402A-45A1-9D06-CE7ECAFBA693}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -127,6 +139,8 @@ Global
 		{1E892F6B-1B8E-4B44-83CB-084736C39F17} = {6B5C8467-D171-4D65-A072-45364F7B126A}
 		{E53006A6-EC0B-4336-ADFB-4F4E77AD3E69} = {96C4D024-6CB6-438C-900A-E86DF1F34066}
 		{7B4DA626-F437-4D53-976D-6A4450F1F63C} = {6B5C8467-D171-4D65-A072-45364F7B126A}
+		{A78C3A95-62F0-42BA-B87F-AE83D2AA9FD6} = {6B5C8467-D171-4D65-A072-45364F7B126A}
+		{ECDAC06A-402A-45A1-9D06-CE7ECAFBA693} = {6B5C8467-D171-4D65-A072-45364F7B126A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E360CC79-65B8-4C5D-92D2-F8FD74FBD8C7}

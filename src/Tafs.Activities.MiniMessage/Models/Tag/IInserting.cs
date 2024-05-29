@@ -1,5 +1,5 @@
 ﻿//
-//  InvoiceDocumentDTO.cs
+//  IInserting.cs
 //
 //  Author:
 //       Devin Duanne <dduanne@tafs.com>
@@ -20,26 +20,30 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-using System;
-using System.Collections.Generic;
+using JetBrains.Annotations;
+using Tafs.Activities.MiniMessage.Models.Text;
 
-namespace Tafs.Activities.TafsAPI.Models.Legacy
+namespace Tafs.Activities.MiniMessage.Models.Tag
 {
     /// <summary>
-    /// Describes a legacy InvoiceDocument DTO.
+    /// A tag that inserts a <see cref="Component"/> into the output.
     /// </summary>
-    public sealed record class InvoiceDocumentDTO
-    (
-        Guid InvoiceDocumentId,
-        Guid InvoiceId,
-        string DocumentType,
-        bool DecompressDocument,
-        short? ItemSort
-    )
+    public interface IInserting : ITag
     {
         /// <summary>
-        /// Gets a list of Invoice attachments.
+        /// Gets the component this tag produces.
         /// </summary>
-        public List<InvoiceAttachmentDTO> InvoiceAttachments { get; } = new();
+        [NotNull]
+        IComponent Value { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether this tag allows children.
+        /// </summary>
+        /// <remarks>
+        /// If children are not allowed, this tag will be auto-closing and should not
+        /// be closed explicitly. In strict mode, a closing tag will be an error. In
+        /// lenient mode, the closing tag will be interpreted as literal text.
+        /// </remarks>
+        bool AllowsChildren { get => true; }
     }
 }

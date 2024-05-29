@@ -1,0 +1,10 @@
+﻿<Project Sdk="Remora.Sdk">
+
+  <PropertyGroup>
+    <VersionPrefix>0.1.0</VersionPrefix>
+    <Description>Provides activities for searching chunks of a text file.</Description>
+    <PackageReleaseNotes>Initial Release.</PackageReleaseNotes>
+    <PackageTags>$(PackageTags);UiPath;Activities;</PackageTags>
+  </PropertyGroup>
+
+</Project>

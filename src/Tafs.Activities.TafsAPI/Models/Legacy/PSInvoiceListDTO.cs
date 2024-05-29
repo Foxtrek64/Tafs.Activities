@@ -25,7 +25,9 @@ using System.Collections.Generic;
 
 namespace Tafs.Activities.TafsAPI.Models.Legacy
 {
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+    /// <summary>
+    /// Describes a legacy invoice list DTO.
+    /// </summary>
     public sealed record class PSInvoiceListDTO
     (
         int? TotalRecords,

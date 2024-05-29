@@ -28,5 +28,22 @@ namespace Tafs.Activities.Results.Extensions.Errors
     /// Represents an error that occurred as a result of validation.
     /// </summary>
     /// <param name="Message">The reason validation failed.</param>
-    public sealed record class ValidationError(string Message) : ResultError(Message);
+    public sealed record class ValidationError(string Message) : ResultError(Message)
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ValidationError"/> class.
+        /// </summary>
+        /// <param name="expected">The expected value.</param>
+        /// <param name="actual">The actual value.</param>
+        /// <param name="comment">An optional comment to provide additional detail.</param>
+        public ValidationError
+        (
+            string expected,
+            string actual,
+            string? comment = null
+        )
+            : this($"'{expected}' does not equal '{actual}'. {comment ?? string.Empty}".Trim())
+        {
+        }
+    }
 }

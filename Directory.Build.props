@@ -4,15 +4,11 @@
 		<LegalEmail>dduanne@tafs.com</LegalEmail>
     <Company>TAFS, LLC.</Company>
     <LegalCopyrightHolder>TAFS, LLC.</LegalCopyrightHolder>
-    <Description>
-      $(ProjectDescription)
-
-      New in $(VersionPrefix)$(VersionSuffix): $(PackageReleaseNotes)
-    </Description>
 	</PropertyGroup>
 
 	<PropertyGroup>
 		<SolutionDir>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)/))</SolutionDir>
+    <ProjectDeprecated>false</ProjectDeprecated>
 	</PropertyGroup>
 
   <PropertyGroup>
@@ -22,6 +18,11 @@
     <PackageProjectUrl>https://github.com/TA-RPA/Tafs.Activities</PackageProjectUrl>
     <PackageOutputPath>$(SolutionDir)/nuget</PackageOutputPath>
     <PackageTags>TAFS;RPA;UiPath</PackageTags>
+    <PackageIconPath>$(SolutionDir)/bot_logo.png</PackageIconPath>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Update="StyleCop.Analyzers" Version="1.2.0-beta.556" />
+  </ItemGroup>
 
 </Project>

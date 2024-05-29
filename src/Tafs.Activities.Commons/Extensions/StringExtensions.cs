@@ -21,7 +21,10 @@
 //
 
 using System;
+using System.Buffers;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
 using JetBrains.Annotations;
 
@@ -59,16 +62,19 @@ namespace Tafs.Activities.Commons.Extensions
                 // Same as original .NET C# string.Replace behavior.
                 throw new ArgumentNullException(nameof(str));
             }
+
             if (oldValue == null)
             {
                 // Same as original .NET C# string.Replace behavior.
                 throw new ArgumentNullException(nameof(oldValue));
             }
+
             if (oldValue.Length == 0)
             {
                 // Same as original .NET C# string.Replace behavior.
                 throw new ArgumentException("String cannot be of zero length.");
             }
+
             if (str.Length == 0)
             {
                 // Same as original .NET C# string.Replace behavior.
@@ -103,25 +109,40 @@ namespace Tafs.Activities.Commons.Extensions
                 }
 
                 // Prepare start index for the next search.
-                // This needed to prevent infinite loop, otherwise method always start search
-                // from the start of the string. For example: if an oldValue == "EXAMPLE", newValue == "example"
-                // and comparisonType == "any ignore case" will conquer to replacing:
-                // "EXAMPLE" to "example" to "example" to "example" … infinite loop.
+                // This prevents an infinitel loop replacing the same value repeatedly.
+                // For example: if oldValue == "EXAMPLE", newValue == "example", comparisonType == "any ignore case"
+                // "EXAMPLE" to "example" to "example" to "example" …
                 startSearchFromIndex = foundAt + oldValue.Length;
                 if (startSearchFromIndex == str.Length)
                 {
-                    // It is end of the input string: no more space for the next search.
-                    // The input string ends with a value that has already been replaced.
-                    // Therefore, the string builder with the result is complete and no further action is required.
+                    // We've reached the end of the input string.
                     return resultStringBuilder.ToString();
                 }
             }
 
-            // Append the last part to the result.
+            // More text after the last replacement exists.
+            // Append it to the end of the relaced string.
             int charsUntilStringEnd = str.Length - startSearchFromIndex;
             resultStringBuilder.Append(str, startSearchFromIndex, charsUntilStringEnd);
 
             return resultStringBuilder.ToString();
         }
+
+        /// <summary>
+        /// Converts the provided set of runes into a string.
+        /// </summary>
+        /// <param name="runes">The runes to concatenate.</param>
+        /// <returns>A string representing the set of runes.</returns>
+        [DebuggerStepThrough]
+        [PublicAPI]
+        public static string AsString(this IEnumerable<Rune> runes)
+            => string.Create(runes.Count(), runes, static (buffer, runes) =>
+            {
+                foreach (var rune in runes)
+                {
+                    var charsWritten = rune.EncodeToUtf16(buffer);
+                    buffer = buffer[charsWritten..];
+                }
+            });
     }
 }

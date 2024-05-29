@@ -20,6 +20,7 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
+using System.Runtime.Versioning;
 using System.Windows;
 using System.Windows.Controls;
 

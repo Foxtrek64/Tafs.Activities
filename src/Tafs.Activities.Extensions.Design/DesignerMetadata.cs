@@ -1,5 +1,5 @@
 ﻿//
-//  InvoiceDocumentDTO.cs
+//  DesignerMetadata.cs
 //
 //  Author:
 //       Devin Duanne <dduanne@tafs.com>
@@ -20,26 +20,31 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-using System;
-using System.Collections.Generic;
+using System.Activities.Presentation.Metadata;
+using System.ComponentModel;
+using Tafs.Activities.Extensions.Design.Statements;
+using Tafs.Activities.Extensions.Statements;
 
-namespace Tafs.Activities.TafsAPI.Models.Legacy
+namespace Tafs.Activities.Extensions.Design
 {
     /// <summary>
-    /// Describes a legacy InvoiceDocument DTO.
+    /// Provides a way to link activities to their design.
     /// </summary>
-    public sealed record class InvoiceDocumentDTO
-    (
-        Guid InvoiceDocumentId,
-        Guid InvoiceId,
-        string DocumentType,
-        bool DecompressDocument,
-        short? ItemSort
-    )
+    public sealed class DesignerMetadata : IRegisterMetadata
     {
         /// <summary>
-        /// Gets a list of Invoice attachments.
+        /// Registers all of the activities and connects them to their design.
         /// </summary>
-        public List<InvoiceAttachmentDTO> InvoiceAttachments { get; } = new();
+        public static void RegisterAll() => new DesignerMetadata().Register();
+
+        /// <inheritdoc/>
+        public void Register()
+        {
+            var builder = new AttributeTableBuilder();
+
+            builder.AddCustomAttributes(typeof(AddToDictionary<,>), new DesignerAttribute(typeof(AddToDictionaryDesign)));
+
+            MetadataStore.AddAttributeTable(builder.CreateTable());
+        }
     }
 }

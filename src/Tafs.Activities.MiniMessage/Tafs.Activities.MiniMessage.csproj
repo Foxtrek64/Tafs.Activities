@@ -1,14 +1,11 @@
-<Project Sdk="Remora.Sdk">
+﻿<Project Sdk="Remora.Sdk">
 
   <PropertyGroup>
-    <LibraryFrameworks>net461;netstandard2.1;net6.0;net7.0;net8.0</LibraryFrameworks>
-  </PropertyGroup>
-
-  <PropertyGroup>
+    <LibraryFrameworks>net8.0</LibraryFrameworks>
     <VersionPrefix>0.1.0</VersionPrefix>
-    <Description>Provides a set of helpers to convert lambdas into Func&lt;&gt; types.</Description>
+    <Description>Provides a C# implementation of Kyori's MiniMessage service.</Description>
     <PackageReleaseNotes>Initial Release</PackageReleaseNotes>
-    <PackageTags>$(PackageTags);UiPath;Activities;Remora;Result;</PackageTags>
+    <PackageTags>$(PackageTags);MiniMessage;</PackageTags>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 

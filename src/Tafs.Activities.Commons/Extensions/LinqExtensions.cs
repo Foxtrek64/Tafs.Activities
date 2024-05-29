@@ -74,7 +74,6 @@ namespace Tafs.Activities.Commons.Extensions
             return Task.WhenAll(values.Select(item => task.Invoke(item, cancellationToken)));
         }
 
-#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_0_OR_GREATER
         /// <inheritdoc cref="ForEachAsync{TValue}(IEnumerable{TValue}, Func{TValue, CancellationToken, Task}, CancellationToken)"/>
         public static async Task ForEachAsync<TValue>(this IAsyncEnumerable<TValue> values, Func<TValue, CancellationToken, Task> task, CancellationToken cancellationToken = default)
         {
@@ -83,6 +82,5 @@ namespace Tafs.Activities.Commons.Extensions
                 await task.Invoke(item, cancellationToken);
             }
         }
-#endif
     }
 }

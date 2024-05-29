@@ -1,5 +1,5 @@
 ﻿//
-//  InvoiceDocumentDTO.cs
+//  Chunk.cs
 //
 //  Author:
 //       Devin Duanne <dduanne@tafs.com>
@@ -20,26 +20,36 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-using System;
-using System.Collections.Generic;
+using System.IO.MemoryMappedFiles;
 
-namespace Tafs.Activities.TafsAPI.Models.Legacy
+namespace Tafs.Activities.FileChunks
 {
     /// <summary>
-    /// Describes a legacy InvoiceDocument DTO.
+    /// Represents a chunk of a <see cref="MemoryMappedFile"/>.
     /// </summary>
-    public sealed record class InvoiceDocumentDTO
+    /// <param name="Offset">The offset in bytes.</param>
+    /// <param name="Size">The size of the chunk in bytes.</param>
+    /// <param name="Content">The contents of the chunk as text.</param>
+    public sealed record class Chunk
     (
-        Guid InvoiceDocumentId,
-        Guid InvoiceId,
-        string DocumentType,
-        bool DecompressDocument,
-        short? ItemSort
+        long Offset,
+        long Size,
+        string Content
     )
     {
         /// <summary>
-        /// Gets a list of Invoice attachments.
+        /// Gets the offset in bytes to the text in the original file.
         /// </summary>
-        public List<InvoiceAttachmentDTO> InvoiceAttachments { get; } = new();
+        public long Offset { get; } = Offset;
+
+        /// <summary>
+        /// Gets the length of the content in bytes.
+        /// </summary>
+        public long Size { get; } = Size;
+
+        /// <summary>
+        /// Gets the contents of the chunk as text.
+        /// </summary>
+        public string Content { get; } = Content;
     }
 }

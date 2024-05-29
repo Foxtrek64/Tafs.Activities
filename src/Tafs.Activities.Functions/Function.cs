@@ -25,7 +25,7 @@ using System;
 namespace Tafs.Activities.Functions
 {
     /// <summary>
-    /// Provides a set of helper functions that map a lambda to a Func&lt;&gt;.
+    /// Provides a set of helper functions that map a lambda to a <see cref="Func{TResult}"/>.
     /// </summary>
     public static class Function
     {

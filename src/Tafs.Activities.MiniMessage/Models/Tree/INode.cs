@@ -1,5 +1,5 @@
 ﻿//
-//  InvoiceDocumentDTO.cs
+//  INode.cs
 //
 //  Author:
 //       Devin Duanne <dduanne@tafs.com>
@@ -20,26 +20,39 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-using System;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 
-namespace Tafs.Activities.TafsAPI.Models.Legacy
+namespace Tafs.Activities.MiniMessage.Models.Tree
 {
     /// <summary>
-    /// Describes a legacy InvoiceDocument DTO.
+    /// Defines a node in a MiniMessage parse tree.
     /// </summary>
-    public sealed record class InvoiceDocumentDTO
-    (
-        Guid InvoiceDocumentId,
-        Guid InvoiceId,
-        string DocumentType,
-        bool DecompressDocument,
-        short? ItemSort
-    )
+    [PublicAPI]
+    internal interface INode
     {
         /// <summary>
-        /// Gets a list of Invoice attachments.
+        /// Gets the parent node or null if this is the top-most node.
         /// </summary>
-        public List<InvoiceAttachmentDTO> InvoiceAttachments { get; } = new();
+        INode? Parent { get; }
+
+        /// <summary>
+        /// Gets children of this node.
+        /// </summary>
+        /// <returns>A list of child nodes.</returns>
+        [NotNull]
+        IReadOnlyList<INode> GetChildren();
+
+        /// <summary>
+        /// The root node of a parse.
+        /// </summary>
+        public interface IRoot : INode
+        {
+            /// <summary>
+            /// Gets the original provided message which produced this node.
+            /// </summary>
+            [NotNull]
+            string Input { get; }
+        }
     }
 }

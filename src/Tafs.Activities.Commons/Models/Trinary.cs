@@ -274,6 +274,7 @@ namespace Tafs.Activities.Commons.Models
             {
                 return -1;
             }
+
             return 1;
         }
 
@@ -467,6 +468,7 @@ namespace Tafs.Activities.Commons.Models
             return _value == other._value;
         }
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static bool operator ==(Trinary left, Trinary right)
         {
             return left.Equals(right);
@@ -496,5 +498,6 @@ namespace Tafs.Activities.Commons.Models
         {
             return left.CompareTo(right) >= 0;
         }
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
     }
 }

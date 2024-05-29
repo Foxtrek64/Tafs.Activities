@@ -21,12 +21,7 @@
 //
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using Tafs.Activities.TafsAPI.Models.Legacy;
 
 namespace Tafs.Activities.TafsAPI.Models.Extensions
 {
@@ -48,7 +43,9 @@ namespace Tafs.Activities.TafsAPI.Models.Extensions
 
             if (size == 0)
             {
-                return Array.Empty<byte>();
+#pragma warning disable SA1010
+                return []; // Empty array
+#pragma warning restore SA1010
             }
 
             byte[] arr = new byte[size];

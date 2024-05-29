@@ -1,14 +1,16 @@
 ﻿<Project Sdk="Remora.Sdk">
 
   <PropertyGroup>
-    <LibraryFrameworks>net461;net6.0;net7.0</LibraryFrameworks>
+    <LibraryFrameworks>net461;net6.0;net7.0;net8.0</LibraryFrameworks>
+    <TargetNetStandard>false</TargetNetStandard>
   </PropertyGroup>
 
   <PropertyGroup>
-    <VersionPrefix>2.2.0</VersionPrefix>
+    <VersionPrefix>2.2.1</VersionPrefix>
     <ProjectDescription>Provides extended base types for custom activities.</ProjectDescription>
     <PackageReleaseNotes>Add net6.0 target.</PackageReleaseNotes>
     <PackageTags>$(PackageTags);UiPath;Activities;</PackageTags>
+    <PackageDeprecated>true</PackageDeprecated>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net461'">

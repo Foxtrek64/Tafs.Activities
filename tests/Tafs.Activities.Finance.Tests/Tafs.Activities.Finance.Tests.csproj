@@ -1,4 +1,7 @@
 ﻿<Project Sdk="Remora.Tests.Sdk">
+  <PropertyGroup>
+    <TargetNetStandard>false</TargetNetStandard>
+  </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\Tafs.Activities.Finance\Tafs.Activities.Finance.csproj" />
   </ItemGroup>

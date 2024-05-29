@@ -1,25 +1,30 @@
 ﻿<Project Sdk="Remora.Sdk">
 
   <PropertyGroup>
-    <LibraryFrameworks>net6.0;net7.0;net8.0</LibraryFrameworks>
+    <LibraryFrameworks>net6.0-windows;net7.0-windows;net8.0-windows</LibraryFrameworks>
     <TargetNetStandard>false</TargetNetStandard>
+    <UseWPF>true</UseWPF>
   </PropertyGroup>
 
   <PropertyGroup>
     <VersionPrefix>0.1.2</VersionPrefix>
     <PackageReleaseNotes>Add expressions. Remove unnecesary dependencies. Change library frameworks.</PackageReleaseNotes>
     <Description>
-      Adds a set of extensions and addons, a la Microsoft.Acivities.Extensions.
+      Provides designs for Tafs.Activities.Extensions.
     </Description>
     <PackageTags>$(PackageTags)</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="UiPath.Workflow" Version="6.0.3" />
+    <PackageReference Include="System.Activities.Core.Presentation" Version="6.0.0-20220831.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Tafs.Activities.SecureStringConverter\Tafs.Activities.SecureStringConverter.csproj" />
+    <ProjectReference Include="..\Tafs.Activities.Extensions\Tafs.Activities.Extensions.csproj">
+      <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
+      <IncludeAssets>Tafs.Activities.Extensions.dll</IncludeAssets>
+    </ProjectReference>
   </ItemGroup>
 
 </Project>

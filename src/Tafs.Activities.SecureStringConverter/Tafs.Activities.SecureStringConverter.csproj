@@ -1,13 +1,13 @@
 <Project Sdk="Remora.Sdk">
 
   <PropertyGroup>
-    <LibraryFrameworks>net461;netstandard2.1;net6.0;net7.0</LibraryFrameworks>
+    <LibraryFrameworks>net461;netstandard2.1;net6.0;net7.0;net8.0</LibraryFrameworks>
   </PropertyGroup>
 
   <PropertyGroup>
-    <VersionPrefix>2.1.0</VersionPrefix>
+    <VersionPrefix>2.1.1</VersionPrefix>
     <Description>Provides activities for converting to and from SecureString.</Description>
-    <PackageReleaseNotes>Re-release as Remora.Sdk.</PackageReleaseNotes>
+    <PackageReleaseNotes>Add Net8 target.</PackageReleaseNotes>
     <PackageTags>$(PackageTags);UiPath;Activities;</PackageTags>
   </PropertyGroup>
 
