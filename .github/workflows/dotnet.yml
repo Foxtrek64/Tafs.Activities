@@ -7,16 +7,23 @@ env:
 
 on:
   - push
+  - pull_request
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: 7.0.x
+          dotnet-version: |
+            6.0.x
+            7.0.x
+
+      - name: Add MyGet Package Source
+        run: |
+          dotnet nuget add source https://www.myget.org/F/workflow/ --name "UiPath Official"
 
       - name: Build
         run: |
@@ -28,7 +35,7 @@ jobs:
 
       - name: Package
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        run: dotnet pack -c Release --no-restore --no-build --version-suffix "github"
+        run: dotnet pack -c Release --no-restore --no-build
       - uses: actions/upload-artifact@v4
         with:
           name: nupkg
