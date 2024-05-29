@@ -24,6 +24,9 @@ using System;
 
 namespace Tafs.Activities.TafsAPI.Models.Legacy
 {
+    /// <summary>
+    /// Describes a legacy invoice transaction DTO.
+    /// </summary>
     public sealed record class InvoiceTransactionDTO
     (
         Guid InvoiceTransactionId,
