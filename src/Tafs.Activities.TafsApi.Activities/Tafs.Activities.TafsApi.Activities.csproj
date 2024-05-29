@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <LibraryFrameworks>net6.0;net7.0;net8.0</LibraryFrameworks>
+    <TargetNetStandard>false</TargetNetStandard>
   </PropertyGroup>
 
   <PropertyGroup>

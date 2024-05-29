@@ -43,7 +43,9 @@ namespace Tafs.Activities.TafsAPI.Models.Extensions
 
             if (size == 0)
             {
+#pragma warning disable SA1010
                 return []; // Empty array
+#pragma warning restore SA1010
             }
 
             byte[] arr = new byte[size];

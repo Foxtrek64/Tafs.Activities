@@ -23,7 +23,7 @@
 using System;
 using Newtonsoft.Json;
 
-namespace Tafs.Activities.TafsAPI.Models.Invoices
+namespace Tafs.Activities.TafsAPI.Models.Modern.Invoices
 {
     /// <summary>
     /// Defines an attachment for the invoice.

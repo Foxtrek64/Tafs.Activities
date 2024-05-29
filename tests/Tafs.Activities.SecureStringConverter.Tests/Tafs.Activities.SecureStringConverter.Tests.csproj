@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <ExcludeTestsFromCoverage>false</ExcludeTestsFromCoverage>
+    <TargetNetStandard>false</TargetNetStandard>
   </PropertyGroup>
   
   <ItemGroup>

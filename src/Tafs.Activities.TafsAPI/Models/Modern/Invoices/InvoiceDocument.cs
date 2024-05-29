@@ -20,7 +20,7 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-namespace Tafs.Activities.TafsAPI.Models.Invoices
+namespace Tafs.Activities.TafsAPI.Models.Modern.Invoices
 {
     /// <summary>
     /// Defines the model for an invoice document.
