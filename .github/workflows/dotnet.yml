@@ -29,7 +29,25 @@ jobs:
       - name: Package
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: dotnet pack -c Release --no-restore --no-build --version-suffix "github"
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: nupkg
           path: nuget/*
+
+  prerelease:
+    needs: build
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download package artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: nupkg
+          path: nuget
+
+      - name: Push to GitHub Feed
+        run: |
+          for f in ./nuget/*; do
+            curl -vX PUT -u "$GITHUB_USER:$GITHUB_TOKEN" -F package=@$f $GITHUB_FEED
+          done
