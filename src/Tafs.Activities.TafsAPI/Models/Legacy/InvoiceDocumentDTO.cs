@@ -25,6 +25,9 @@ using System.Collections.Generic;
 
 namespace Tafs.Activities.TafsAPI.Models.Legacy
 {
+    /// <summary>
+    /// Describes a legacy InvoiceDocument DTO.
+    /// </summary>
     public sealed record class InvoiceDocumentDTO
     (
         Guid InvoiceDocumentId,
