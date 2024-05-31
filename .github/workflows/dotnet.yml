@@ -6,8 +6,10 @@ env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 on:
-  - push
-  - pull_request
+  workflow_dispatch: # Run from GitHub UI
+  push:
+    branches:
+      - "main"
 
 jobs:
   build:
@@ -20,6 +22,7 @@ jobs:
           dotnet-version: |
             6.0.x
             7.0.x
+            8.0.x
 
       - name: Add MyGet Package Source
         run: |
@@ -33,27 +36,57 @@ jobs:
       - name: Test
         run: dotnet test -c Release --no-restore --no-build --verbosity minimal
 
+      - name: Inspect
+        uses: JetBrains/ReSharper-InspectCode@v0.3
+        with:
+          tool-version: 2023.3.4
+          solution: Tafs.Activities.sln
+          build: false
+          no-build: true
+          telemetry-optout: true
+
       - name: Package
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        run: dotnet pack -c Release --no-restore --no-build
+        if: github.ref != 'refs/heads/main' && github.event_name == 'push'
+        run: dotnet pack -c Release --no-restore --no-build --version-suffix "github$GITHUB_RUN_ID"
       - uses: actions/upload-artifact@v4
         with:
           name: nupkg
           path: nuget/*
 
-  prerelease:
+  publish:
     needs: build
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     runs-on: ubuntu-latest
 
     steps:
       - name: Download package artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: nupkg
           path: nuget
 
-      - name: Push to GitHub Feed
+      # To ensure that hte current version being pushed does not get pruned, we prune first.
+      - name: Prune packages older than 4 versions (new version is the 5th)
+        uses: smartsquaregmbh/delete-old-packages@v0.8.0
+        with:
+          organization: TA-RPA
+          type: nuget
+          keep: 4
+          names: |
+            Tafs.Activities.ActivityBase
+            Tafs.Activities.Commons
+            Tafs.Activities.Extensions
+            Tafs.Activities.Extensions.Design
+            Tafs.Activities.FileChunks
+            Tafs.Activities.Finance
+            Tafs.Activities.Functions
+            Tafs.Activities.NetworkActivities
+            Tafs.Activities.Results.Extensions
+            Tafs.Activities.SecureStringConverter
+            Tafs.Activities.TafsAPI
+            Tafs.Activities.TafsApi.Activities
+      
+      - name: Push to GitHub feed
         run: |
           for f in ./nuget/*; do
             curl -vX PUT -u "$GITHUB_USER:$GITHUB_TOKEN" -F package=@$f $GITHUB_FEED
