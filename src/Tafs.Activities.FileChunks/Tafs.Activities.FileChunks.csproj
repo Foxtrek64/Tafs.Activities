@@ -1,10 +1,22 @@
 ﻿<Project Sdk="Remora.Sdk">
 
   <PropertyGroup>
-    <VersionPrefix>0.1.0</VersionPrefix>
+    <LibraryFrameworks>net471;net6.0;net7.0;net8.0</LibraryFrameworks>
+    <VersionPrefix>0.2.0</VersionPrefix>
     <Description>Provides activities for searching chunks of a text file.</Description>
-    <PackageReleaseNotes>Initial Release.</PackageReleaseNotes>
+    <PackageReleaseNotes>
+      - Fix typo.
+      - Add clarification that chunkLength is in bytes.
+      - Change to MIT license.
+      - Add net461 target.
+    </PackageReleaseNotes>
     <PackageTags>$(PackageTags);UiPath;Activities;</PackageTags>
+    <LegalLicense>MIT</LegalLicense>
+    <UseSPDXFileHeaders>true</UseSPDXFileHeaders>
   </PropertyGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net471'">
+    <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="8.0.0" />
+  </ItemGroup>
 
 </Project>
