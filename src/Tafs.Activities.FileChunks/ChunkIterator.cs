@@ -9,8 +9,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.MemoryMappedFiles;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
+using Tafs.Activities.FileChunks.Extensions;
 
 namespace Tafs.Activities.FileChunks
 {
@@ -138,7 +140,12 @@ namespace Tafs.Activities.FileChunks
                 using var streamer = memoryMappedFile.CreateViewStream(offset, length);
 
                 var chunkBytes = new byte[streamer.Length];
+#if NET461_OR_GREATER
+                _ = MemoryMarshal.TryGetArray(chunkBytes, out ArraySegment<byte> destinationArray);
+                _ = await streamer.ReadAsync(destinationArray.Array, destinationArray.Offset, destinationArray.Count, cancellationToken);
+#else
                 _ = await streamer.ReadAsync(chunkBytes, cancellationToken);
+#endif
                 var lines = Encoding.UTF8.GetString(chunkBytes);
                 var chunk = new Chunk(offset, length, lines);
 

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Remora.Sdk">
 
   <PropertyGroup>
-    <LibraryFrameworks>net471;net6.0;net7.0;net8.0</LibraryFrameworks>
+    <LibraryFrameworks>net461;net471;net6.0;net7.0;net8.0</LibraryFrameworks>
     <VersionPrefix>0.2.0</VersionPrefix>
     <Description>Provides activities for searching chunks of a text file.</Description>
     <PackageReleaseNotes>
@@ -15,8 +15,9 @@
     <UseSPDXFileHeaders>true</UseSPDXFileHeaders>
   </PropertyGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'net471'">
+  <ItemGroup Condition="'$(TargetFramework)' == 'net461' or '$(TargetFramework)' == 'net471'">
     <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="8.0.0" />
+    <PackageReference Include="System.Memory" Version="4.5.4" />
   </ItemGroup>
 
 </Project>

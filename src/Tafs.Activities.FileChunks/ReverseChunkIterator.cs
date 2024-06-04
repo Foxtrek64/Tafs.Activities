@@ -28,7 +28,7 @@ namespace Tafs.Activities.FileChunks
         /// <param name="memoryMappedFile">The file to read.</param>
         internal ReverseChunkIterator(Dictionary<long, long> chunks, MemoryMappedFile memoryMappedFile)
         {
-            _reverseChunks = new(chunks.Reverse());
+            _reverseChunks = new((Dictionary<long, long>)chunks.Reverse());
             _mmf = memoryMappedFile;
         }
 
