@@ -24,6 +24,7 @@ using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
+using System.Numerics;
 using JetBrains.Annotations;
 using Remora.Results;
 using Tafs.Activities.Finance.Extensions;
@@ -36,7 +37,14 @@ namespace Tafs.Activities.Finance.Models
     /// </summary>
     [PublicAPI]
     [DebuggerDisplay($"{{{nameof(GetDebuggerDisplay)}(),nq}}")]
-    public readonly struct SocialSecurityNumber : IFormattable, IEquatable<SocialSecurityNumber>
+    public readonly struct SocialSecurityNumber
+#pragma warning disable SA1001 // Commas should not be preceeded by whitespace.
+        : IFormattable
+        , IEquatable<SocialSecurityNumber>
+#if NET7_0_OR_GREATER
+        , IEqualityOperators<SocialSecurityNumber, SocialSecurityNumber, bool>
+#endif
+#pragma warning restore SA1001
     {
         /// <summary>
         /// Gets the first three digits of the SSN. Formerly used to denote geographic location.
@@ -88,9 +96,11 @@ namespace Tafs.Activities.Finance.Models
         {
             Result<SocialSecurityNumber> parseResult = FromString(ssn);
 
-            return parseResult.IsDefined(out var parsedNumber)
-                ? parsedNumber
-                : throw new ArgumentException(parseResult.Error!.Message, nameof(ssn));
+            return parseResult.MapOrElse
+            (
+                it => it,
+                (error, _) => throw new ArgumentException(error.Message, nameof(ssn))
+            );
         }
 
         /// <summary>
@@ -99,7 +109,7 @@ namespace Tafs.Activities.Finance.Models
         /// <param name="ssn">The social security number to validate.</param>
         /// <param name="result">The parsed <see cref="SocialSecurityNumber"/>.</param>
         /// <returns><see langword="true" /> if the parse succeeded; otherwise, <see langword="false" />.</returns>
-        public static bool TryParse(string ssn, out SocialSecurityNumber result)
+        public static bool TryParse(string ssn, [NotNullWhen(true)] out SocialSecurityNumber result)
         {
             return FromString(ssn).IsDefined(out result);
         }
@@ -131,10 +141,14 @@ namespace Tafs.Activities.Finance.Models
                 return new ArgumentOutOfRangeError(nameof(ssn), "Provided value was shorter than 9 characters.");
             }
 
-            bool allNumbers = Array.TrueForAll(ssn.ToCharArray(), "0123456789".Contains);
-            if (!allNumbers)
+            Result allNumbers = ssn.ToCharArray().AllMatch
+            (
+                $"Social Security Numbers may only consist of the numbers [0-9], hyphens, and spaces.",
+                "0123456789".Contains
+            );
+            if (!allNumbers.IsSuccess)
             {
-                return new ArgumentInvalidError(nameof(ssn), $"Social Security Numbers may only consist of the numbers [0-9], hyphens, and spaces.");
+                return Result<SocialSecurityNumber>.FromError(allNumbers);
             }
 
             short areaNumber = (short)(
@@ -202,7 +216,7 @@ namespace Tafs.Activities.Finance.Models
 
             if (ssn.AreaNumber is >= 900 and <= 999)
             {
-                return new ValidationError($"The area number must be between [900..999] inclusive. Provided: '{ssn.AreaNumber}'.");
+                return new ValidationError($"The area number must not be between [900..999] inclusive. Provided: '{ssn.AreaNumber}'.");
             }
 
             // Equals either invalidated number.
@@ -220,13 +234,17 @@ namespace Tafs.Activities.Finance.Models
             return Result.FromSuccess();
         }
 
+#if NET7_0_OR_GREATER
         /// <summary>
         /// Gets this <see cref="SocialSecurityNumber"/> as an array.
         /// </summary>
+        /// <typeparam name="TNumber">The numeric type to convert into.</typeparam>
         /// <returns>This <see cref="SocialSecurityNumber"/> as an array.</returns>
-        public int[] AsArray()
+        /// <exception cref="OverflowException">Thrown when <typeparamref name="TNumber"/> cannot represent the requested value.</exception>
+        public TNumber[] AsArray<TNumber>()
+            where TNumber : INumber<TNumber>
         {
-            static void Subdivide(short value, int[] number, int count)
+            static void Subdivide(short value, TNumber[] number, int count)
             {
                 if (value == 0)
                 {
@@ -235,19 +253,20 @@ namespace Tafs.Activities.Finance.Models
 
                 for (short x = value; x > 0; x /= 10)
                 {
-                    number[count--] = x % 10;
+                    number[count--] = TNumber.CreateChecked(x % 10);
                 }
 
                 return;
             }
 
-            var number = new int[9];
+            var number = new TNumber[9];
             Subdivide(SerialNumber, number, count: 8);
             Subdivide(GroupNumber, number, count: 4);
             Subdivide(AreaNumber, number, count: 2);
 
             return number;
         }
+#endif
 
         /// <inheritdoc/>
         public override bool Equals(object? obj)

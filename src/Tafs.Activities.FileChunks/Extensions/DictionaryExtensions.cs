@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace Tafs.Activities.FileChunks.Extensions
 {
-#if NET471
+#if NET461_OR_GREATER
     /// <summary>
     /// Provides a set of extensions for <see cref="Dictionary{TKey, TValue}"/>.
     /// </summary>

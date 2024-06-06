@@ -23,6 +23,7 @@
 using System;
 using System.Collections.Generic;
 using Remora.Results;
+using Tafs.Activities.Finance.Extensions;
 using Tafs.Activities.Finance.Models;
 using Tafs.Activities.Results.Extensions.Errors;
 using Xunit;
@@ -37,33 +38,89 @@ namespace Tafs.Activities.Finance.Tests
         /// <summary>
         /// Maps a <see cref="SocialSecurityNumber"/> to an integer array.
         /// </summary>
-        public static readonly IReadOnlyList<object[]> SSNToIntArray = new List<object[]>()
-        {
-            new object[] { SocialSecurityNumber.Default, new int[9] },
-            new object[] { SocialSecurityNumber.SampleNumber, new int[] { 2, 1, 9, 0, 9, 9, 9, 9, 9 } },
-            new object[] { SocialSecurityNumber.WoolsworthSSN, new int[] { 0, 7, 8, 0, 5, 1, 1, 2, 0 } }
-        };
+        public static readonly IReadOnlyList<object[]> SSNToIntArray =
+        [
+            [SocialSecurityNumber.Default, new int[9]],
+            [SocialSecurityNumber.SampleNumber, new int[] { 2, 1, 9, 0, 9, 9, 9, 9, 9 }],
+            [SocialSecurityNumber.WoolsworthSSN, new int[] { 0, 7, 8, 0, 5, 1, 1, 2, 0 }]
+        ];
+
+        /// <summary>
+        /// Maps a <see cref="SocialSecurityNumber"/> to a short array.
+        /// </summary>
+        public static readonly IReadOnlyList<object[]> SSNToShortArray =
+        [
+            [SocialSecurityNumber.Default, new short[9]],
+            [SocialSecurityNumber.SampleNumber, new short[] { 2, 1, 9, 0, 9, 9, 9, 9, 9 }],
+            [SocialSecurityNumber.WoolsworthSSN, new short[] { 0, 7, 8, 0, 5, 1, 1, 2, 0 }]
+        ];
+
+        /// <summary>
+        /// Maps a <see cref="SocialSecurityNumber"/> to a byte array.
+        /// </summary>
+        public static readonly IReadOnlyList<object[]> SSNToByteArray =
+        [
+            [SocialSecurityNumber.Default, new byte[9]],
+            [SocialSecurityNumber.SampleNumber, new byte[] { 2, 1, 9, 0, 9, 9, 9, 9, 9 }],
+            [SocialSecurityNumber.WoolsworthSSN, new byte[] { 0, 7, 8, 0, 5, 1, 1, 2, 0 }]
+        ];
+
+        /// <summary>
+        /// Gets a list of <see cref="SocialSecurityNumbers"/>.
+        /// </summary>
+        public static readonly IReadOnlyList<object[]> SocialSecurityNumbers =
+        [
+            [SocialSecurityNumber.Default],
+            [SocialSecurityNumber.SampleNumber],
+            [SocialSecurityNumber.WoolsworthSSN]
+        ];
 
         /// <summary>
         /// Maps a <see cref="SocialSecurityNumber"/> to a <see cref="string"/>.
         /// </summary>
-        public static readonly IReadOnlyList<object[]> SSNToString = new List<object[]>()
-        {
-            new object[] { SocialSecurityNumber.Default, "000-00-0000", false },
-            new object[] { SocialSecurityNumber.SampleNumber, "219-09-9999", false },
-            new object[] { SocialSecurityNumber.WoolsworthSSN, "078-05-1120", false }
-        };
+        public static readonly IReadOnlyList<object[]> SSNToString =
+        [
+            [SocialSecurityNumber.Default, "000-00-0000", false],
+            [SocialSecurityNumber.SampleNumber, "219-09-9999", false],
+            [SocialSecurityNumber.WoolsworthSSN, "078-05-1120", false]
+        ];
 
         /// <summary>
-        /// Ensures <see cref="SocialSecurityNumber.AsArray"/> outputs correct value.
+        /// Ensures <see cref="SocialSecurityNumber.AsArray"/> outputs correct values.
         /// </summary>
         /// <param name="input">The <see cref="SocialSecurityNumber"/>.</param>
         /// <param name="expected">An int array representing the <see cref="SocialSecurityNumber"/>.</param>
         [Theory]
         [MemberData(nameof(SSNToIntArray))]
-        public void OutputsCorrectArray(SocialSecurityNumber input, int[] expected)
+        public void OutputsCorrectIntArray(SocialSecurityNumber input, int[] expected)
         {
-            Assert.Equal(expected, input.AsArray());
+            Assert.Equal(expected, input.AsArray<int>());
+        }
+
+        /// <summary>
+        /// Ensures <see cref="SocialSecurityNumber.AsArray{TNumber}()"/> outputs correct values.
+        /// </summary>
+        /// <param name="input">The <see cref="SocialSecurityNumber"/>.</param>
+        /// <param name="expected">A short array representing the <see cref="SocialSecurityNumber"/>.</param>
+        [Theory]
+        [MemberData(nameof(SSNToShortArray))]
+        public void OutputsCorrectShortArray(SocialSecurityNumber input, short[] expected)
+        {
+            Assert.Equal(expected, input.AsArray<short>());
+        }
+
+        /// <summary>
+        /// Ensures <see cref="SocialSecurityNumber.AsArray{TNumber}()"/> outputs correct values.
+        /// </summary>
+        /// <param name="input">The <see cref="SocialSecurityNumber"/>.</param>
+        [Theory]
+        [MemberData(nameof(SocialSecurityNumbers))]
+        public void BitArrayThrows(SocialSecurityNumber input)
+        {
+            if (!Array.TrueForAll(input.AsArray<int>(), it => it is 0 or 1))
+            {
+                Assert.Throws<OverflowException>(input.AsArray<Bit>);
+            }
         }
 
         /// <summary>
