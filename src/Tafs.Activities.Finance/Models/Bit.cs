@@ -21,17 +21,10 @@
 //
 
 using System;
-using System.Buffers.Binary;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
-using System.IO;
 using System.Numerics;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
 
 namespace Tafs.Activities.Finance.Models
 {
@@ -141,7 +134,7 @@ namespace Tafs.Activities.Finance.Models
         public static Bit Log2(Bit value)
         {
             return value._value
-                ? Zero
+                ? Zero // Log2(1) == 0
                 : throw new InvalidOperationException("Cannot perform log2(0)");
         }
 
@@ -172,19 +165,9 @@ namespace Tafs.Activities.Finance.Models
         /// <inheritdoc/>
         public static Bit Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
         {
-            if (s.IsEmpty || s.IsWhiteSpace())
-            {
-                throw new ArgumentNullException(nameof(s));
-            }
-
             int value = int.Parse(s, provider);
 
-            return value switch
-            {
-                0 => Zero,
-                1 => One,
-                _ => throw new ArgumentOutOfRangeException(nameof(s), $"{s.ToString()} is not a valid bit value.")
-            };
+            return FromNumber(value);
         }
 
         /// <inheritdoc/>
@@ -192,12 +175,7 @@ namespace Tafs.Activities.Finance.Models
         {
             int value = int.Parse(s, provider);
 
-            return value switch
-            {
-                0 => Zero,
-                1 => One,
-                _ => throw new ArgumentOutOfRangeException(nameof(s), $"{s.ToString()} is not a valid bit value.")
-            };
+            return FromNumber(value);
         }
 
         /// <inheritdoc cref="INumberBase{TSelf}.TryParse(ReadOnlySpan{char}, NumberStyles, IFormatProvider?, out TSelf)"/>
@@ -218,20 +196,8 @@ namespace Tafs.Activities.Finance.Models
                 return false;
             }
 
-            Bit? r = parseResult switch
-            {
-                0 => Zero,
-                1 => One,
-                _ => null
-            };
-
-            if (r is Bit bit)
-            {
-                result = bit;
-                return true;
-            }
-
-            return false;
+            result = FromNumber(parseResult);
+            return true;
         }
 
         /// <inheritdoc cref="INumberBase{TSelf}.TryParse(string?, NumberStyles, IFormatProvider?, out TSelf)"/>
@@ -252,36 +218,26 @@ namespace Tafs.Activities.Finance.Models
                 return false;
             }
 
-            Bit? r = parseResult switch
-            {
-                0 => Zero,
-                1 => One,
-                _ => null
-            };
-
-            if (r is Bit bit)
-            {
-                result = bit;
-                return true;
-            }
-
-            return false;
+            result = FromNumber(parseResult);
+            return true;
         }
 
         /// <inheritdoc />
         public static Bit PopCount(Bit value) => value;
 
+        /// <inheritdoc/>
         public static Bit TrailingZeroCount(Bit value) => Zero;
 
+        /// <inheritdoc/>
         public static bool TryReadBigEndian(ReadOnlySpan<byte> source, bool isUnsigned, out Bit value)
         {
-            throw new NotImplementedException();
+            value = FromNumber(source[0]);
+            return true;
         }
 
+        /// <inheritdoc/>
         public static bool TryReadLittleEndian(ReadOnlySpan<byte> source, bool isUnsigned, out Bit value)
-        {
-            throw new NotImplementedException();
-        }
+            => TryReadBigEndian(source, isUnsigned, out value);
 
         /// <inheritdoc/>
         public int CompareTo(object? obj)
@@ -306,13 +262,17 @@ namespace Tafs.Activities.Finance.Models
         }
 
         /// <inheritdoc/>
+        public override bool Equals([NotNullWhen(true)] object? obj)
+            => CompareTo(obj) == 0;
+
+        /// <inheritdoc/>
         public bool Equals(Bit other)
         {
             return _value == other._value;
         }
 
         /// <inheritdoc/>
-        public int GetByteCount() => sizeof(bool);
+        public int GetByteCount() => sizeof(byte);
 
         /// <inheritdoc/>
         public int GetShortestBitLength() => 1;
@@ -337,18 +297,12 @@ namespace Tafs.Activities.Finance.Models
         /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="format"/> is not an expected value.</exception>
         public string ToString(string? format = "B", IFormatProvider? formatProvider = null)
         {
-            if (format is "b" or "B")
+            return format switch
             {
-                return _value.ToString(formatProvider);
-            }
-            else if (format is "i" or "I")
-            {
-                return (_value ? 1 : 0).ToString(formatProvider);
-            }
-            else
-            {
-                throw new ArgumentOutOfRangeException(nameof(format));
-            }
+                "b" or "B" => _value.ToString(formatProvider),
+                "i" or "I" => ToNumber<byte>(this).ToString(formatProvider),
+                _ => throw new ArgumentOutOfRangeException(nameof(format))
+            };
         }
 
         /// <inheritdoc/>
@@ -362,44 +316,15 @@ namespace Tafs.Activities.Finance.Models
         /// <inheritdoc/>
         public bool TryWriteBigEndian(Span<byte> destination, out int bytesWritten)
         {
-            AsTOther(this, out int value);
-            bytesWritten = sizeof(int);
-            return BinaryPrimitives.TryWriteInt32BigEndian(destination, value);
+            bytesWritten = GetByteCount();
+            byte value = ToNumber<byte>(this);
+            destination[0] = value;
+            return true;
         }
 
         /// <inheritdoc/>
         public bool TryWriteLittleEndian(Span<byte> destination, out int bytesWritten)
-        {
-            int value = _value ? 1 : 0;
-            bytesWritten = sizeof(int);
-            return BinaryPrimitives.TryWriteInt32LittleEndian(destination, value);
-        }
-
-        /// <summary>
-        /// Attempts to convert a number to a <see cref="Bit"/>.
-        /// </summary>
-        /// <typeparam name="TNumber">The type of number to use.</typeparam>
-        /// <param name="value">The number value to convert.</param>
-        /// <param name="result">The parsed result.</param>
-        /// <returns>A <see cref="Bit"/>.</returns>
-        /// <exception cref="OverflowException">Thrown if <paramref name="value"/> is not 0 or 1.</exception>
-        internal static bool TryFromNumber<TNumber>(TNumber value, [NotNullWhen(true)] out Bit? result)
-            where TNumber : INumberBase<TNumber>
-        {
-            result = null;
-            if (value == TNumber.Zero)
-            {
-                result = Zero;
-                return true;
-            }
-            if (value == TNumber.One)
-            {
-                result = One;
-                return true;
-            }
-
-            return false;
-        }
+            => TryWriteBigEndian(destination, out bytesWritten);
 
         /// <summary>
         /// Converts a number to a <see cref="Bit"/>.
@@ -410,12 +335,19 @@ namespace Tafs.Activities.Finance.Models
         /// <exception cref="OverflowException">Thrown if <paramref name="value"/> is not 0 or 1.</exception>
         internal static Bit FromNumber<TNumber>(TNumber value)
             where TNumber : INumberBase<TNumber>
-            => TryFromNumber(value, out Bit? result)
-                ? result.Value
-                : ThrowOverflowException<Bit>();
+            => value == TNumber.Zero ? Zero : One;
 
-        private static TReturn ThrowOverflowException<TReturn>()
-            => throw new OverflowException();
+        /// <summary>
+        /// Converts the bit to the specified number.
+        /// </summary>
+        /// <typeparam name="TNumber">The type of number to convert to.</typeparam>
+        /// <param name="bit">The bit to convert.</param>
+        /// <returns>The number.</returns>
+        internal static TNumber ToNumber<TNumber>(Bit bit)
+            where TNumber : INumberBase<TNumber>
+        {
+            return bit._value ? TNumber.One : TNumber.Zero;
+        }
 
         /// <inheritdoc/>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -429,7 +361,7 @@ namespace Tafs.Activities.Finance.Models
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         static bool INumberBase<Bit>.TryConvertFromSaturating<TOther>(TOther value, out Bit result)
         {
-            result = value != TOther.Zero ? One : Zero;
+            result = FromNumber(value);
             return true;
         }
 
@@ -437,35 +369,36 @@ namespace Tafs.Activities.Finance.Models
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         static bool INumberBase<Bit>.TryConvertFromTruncating<TOther>(TOther value, out Bit result)
         {
-            throw new NotImplementedException();
+            result = FromNumber(value);
+            return true;
         }
 
         /// <inheritdoc/>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         static bool INumberBase<Bit>.TryConvertToChecked<TOther>(Bit value, out TOther result)
-            => AsTOther(value, out result);
+        {
+            result = ToNumber<TOther>(value);
+            return true;
+        }
 
         /// <inheritdoc/>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         static bool INumberBase<Bit>.TryConvertToSaturating<TOther>(Bit value, out TOther result)
-            => AsTOther(value, out result);
+        {
+            result = ToNumber<TOther>(value);
+            return true;
+        }
 
         /// <inheritdoc/>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         static bool INumberBase<Bit>.TryConvertToTruncating<TOther>(Bit value, out TOther result)
-            => AsTOther(value, out result);
-
-        private static bool AsTOther<TOther>(Bit value, out TOther result)
-            where TOther : INumberBase<TOther>
         {
-            result = value._value
-                ? TOther.One
-                : TOther.Zero;
+            result = ToNumber<TOther>(value);
             return true;
         }
 
         public static explicit operator int(Bit value)
-            => value._value ? 1 : 0;
+            => ToNumber<int>(value);
 
         public static Bit operator +(Bit value) => value;
 
@@ -537,9 +470,15 @@ namespace Tafs.Activities.Finance.Models
         public static Bit operator ^(Bit left, Bit right)
             => new(left._value ^ right._value);
 
+        /// <inheritdoc />
+        /// <remarks><see cref="Bit"/> does not support byte shifting.</remarks>
+        /// <exception cref="NotSupportedException">Bit does not support byte shifting.</exception>
         public static Bit operator <<(Bit value, int shiftAmount)
             => throw new NotSupportedException();
 
+        /// <inheritdoc />
+        /// <remarks><see cref="Bit"/> does not support byte shifting.</remarks>
+        /// <exception cref="NotSupportedException">Bit does not support byte shifting.</exception>
         public static Bit operator >>(Bit value, int shiftAmount)
             => throw new NotSupportedException();
 
@@ -561,6 +500,9 @@ namespace Tafs.Activities.Finance.Models
         public static bool operator >=(Bit left, Bit right)
             => left.CompareTo(right) >= 0;
 
+        /// <inheritdoc />
+        /// <remarks><see cref="Bit"/> does not support byte shifting.</remarks>
+        /// <exception cref="NotSupportedException">Bit does not support byte shifting.</exception>
         public static Bit operator >>>(Bit value, int shiftAmount)
         {
             throw new NotSupportedException();

@@ -21,7 +21,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.TeamFoundationServer.Client" Version="19.225.1" />
     <PackageReference Include="Remora.Results" Version="7.4.1" />
     <PackageReference Include="Remora.Results.Analyzers" Version="1.0.2" />    
   </ItemGroup>

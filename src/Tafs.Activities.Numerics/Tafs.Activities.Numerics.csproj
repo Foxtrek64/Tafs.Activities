@@ -1,0 +1,23 @@
+﻿<Project Sdk="Remora.Sdk">
+
+  <PropertyGroup>
+    <LibraryFrameworks>net461;net6.0;net7.0;net8.0</LibraryFrameworks>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <VersionPrefix>0.1.0</VersionPrefix>
+    <Description>Provides a set of numeric tpes types.</Description>
+    <PackageReleaseNotes>Initial Release</PackageReleaseNotes>
+    <PackageTags>$(PackageTags);UiPath;Activities;Remora;Result;</PackageTags>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Vogen" Version="4.0.16" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Tafs.Activities.Results.Extensions\Tafs.Activities.Results.Extensions.csproj" />
+  </ItemGroup>
+
+</Project>

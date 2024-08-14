@@ -19,17 +19,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Extensions\SocialSecurityNumberExtensions.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>SocialSecurityNumberExtensions.tt</DependentUpon>
-    </None>
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.Bcl.HashCode" Version="1.1.1" />
     <PackageReference Include="Remora.Results" Version="7.4.1" />
     <PackageReference Include="Remora.Results.Analyzers" Version="1.0.2" />
+    <PackageReference Include="System.Text.Json" Version="8.0.4" />
+    <PackageReference Include="Vogen" Version="4.0.15" />
   </ItemGroup>
 
   <ItemGroup>
@@ -38,26 +32,6 @@
 
   <ItemGroup>
     <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="Extensions\BitExtensions.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>BitExtensions.tt</DependentUpon>
-    </Compile>
-    <Compile Update="Extensions\SocialSecurityNumberExtensions.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>SocialSecurityNumberExtensions.tt</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="Extensions\SocialSecurityNumberExtensions.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>SocialSecurityNumberExtensions.cs</LastGenOutput>
-    </None>
   </ItemGroup>
 
 </Project>

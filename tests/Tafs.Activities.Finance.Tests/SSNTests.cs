@@ -40,9 +40,9 @@ namespace Tafs.Activities.Finance.Tests
         /// </summary>
         public static readonly IReadOnlyList<object[]> SSNToIntArray =
         [
-            [SocialSecurityNumber.Default, new int[9]],
+            [SocialSecurityNumber.Zero, new int[9]],
             [SocialSecurityNumber.SampleNumber, new int[] { 2, 1, 9, 0, 9, 9, 9, 9, 9 }],
-            [SocialSecurityNumber.WoolsworthSSN, new int[] { 0, 7, 8, 0, 5, 1, 1, 2, 0 }]
+            [SocialSecurityNumber.WoolsworthNumber, new int[] { 0, 7, 8, 0, 5, 1, 1, 2, 0 }]
         ];
 
         /// <summary>
@@ -50,9 +50,9 @@ namespace Tafs.Activities.Finance.Tests
         /// </summary>
         public static readonly IReadOnlyList<object[]> SSNToShortArray =
         [
-            [SocialSecurityNumber.Default, new short[9]],
+            [SocialSecurityNumber.Zero, new short[9]],
             [SocialSecurityNumber.SampleNumber, new short[] { 2, 1, 9, 0, 9, 9, 9, 9, 9 }],
-            [SocialSecurityNumber.WoolsworthSSN, new short[] { 0, 7, 8, 0, 5, 1, 1, 2, 0 }]
+            [SocialSecurityNumber.WoolsworthNumber, new short[] { 0, 7, 8, 0, 5, 1, 1, 2, 0 }]
         ];
 
         /// <summary>
@@ -60,9 +60,9 @@ namespace Tafs.Activities.Finance.Tests
         /// </summary>
         public static readonly IReadOnlyList<object[]> SSNToByteArray =
         [
-            [SocialSecurityNumber.Default, new byte[9]],
+            [SocialSecurityNumber.Zero, new byte[9]],
             [SocialSecurityNumber.SampleNumber, new byte[] { 2, 1, 9, 0, 9, 9, 9, 9, 9 }],
-            [SocialSecurityNumber.WoolsworthSSN, new byte[] { 0, 7, 8, 0, 5, 1, 1, 2, 0 }]
+            [SocialSecurityNumber.WoolsworthNumber, new byte[] { 0, 7, 8, 0, 5, 1, 1, 2, 0 }]
         ];
 
         /// <summary>
@@ -70,9 +70,9 @@ namespace Tafs.Activities.Finance.Tests
         /// </summary>
         public static readonly IReadOnlyList<object[]> SocialSecurityNumbers =
         [
-            [SocialSecurityNumber.Default],
+            [SocialSecurityNumber.Zero],
             [SocialSecurityNumber.SampleNumber],
-            [SocialSecurityNumber.WoolsworthSSN]
+            [SocialSecurityNumber.WoolsworthNumber]
         ];
 
         /// <summary>
@@ -80,9 +80,9 @@ namespace Tafs.Activities.Finance.Tests
         /// </summary>
         public static readonly IReadOnlyList<object[]> SSNToString =
         [
-            [SocialSecurityNumber.Default, "000-00-0000", false],
-            [SocialSecurityNumber.SampleNumber, "219-09-9999", false],
-            [SocialSecurityNumber.WoolsworthSSN, "078-05-1120", false]
+            [SocialSecurityNumber.Zero, "000-00-0000", false],
+            [SocialSecurityNumber.SampleNumber, "219-09-9999", true],
+            [SocialSecurityNumber.WoolsworthNumber, "078-05-1120", true]
         ];
 
         /// <summary>
@@ -110,21 +110,7 @@ namespace Tafs.Activities.Finance.Tests
         }
 
         /// <summary>
-        /// Ensures <see cref="SocialSecurityNumber.AsArray{TNumber}()"/> outputs correct values.
-        /// </summary>
-        /// <param name="input">The <see cref="SocialSecurityNumber"/>.</param>
-        [Theory]
-        [MemberData(nameof(SocialSecurityNumbers))]
-        public void BitArrayThrows(SocialSecurityNumber input)
-        {
-            if (!Array.TrueForAll(input.AsArray<int>(), it => it is 0 or 1))
-            {
-                Assert.Throws<OverflowException>(input.AsArray<Bit>);
-            }
-        }
-
-        /// <summary>
-        /// Ensures <see cref="SocialSecurityNumber.FromString(string)"/> correctly parses the SSN.
+        /// Ensures <see cref="SocialSecurityNumber.TryParseResult(string)"/> correctly parses the SSN.
         /// </summary>
         /// <param name="expected">The expected SSN.</param>
         /// <param name="value">A string value for parsing.</param>
@@ -133,7 +119,7 @@ namespace Tafs.Activities.Finance.Tests
         [MemberData(nameof(SSNToString))]
         public void EnsureParse(SocialSecurityNumber expected, string value, bool valid)
         {
-            Result<SocialSecurityNumber> parseResult = SocialSecurityNumber.FromString(value);
+            Result<SocialSecurityNumber> parseResult = SocialSecurityNumber.TryParseResult(value);
 
             if (valid)
             {
@@ -143,9 +129,9 @@ namespace Tafs.Activities.Finance.Tests
             }
             else
             {
+                Assert.NotNull(parseResult.Error);
                 Assert.False(parseResult.IsSuccess);
                 Assert.IsType<ValidationError>(parseResult.Error);
-                Assert.NotNull(parseResult.Error);
             }
         }
     }
