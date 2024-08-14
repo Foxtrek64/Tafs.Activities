@@ -22,12 +22,14 @@
 
 using System;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
+using System.Linq;
+using System.Numerics;
+using System.Text.RegularExpressions;
 using JetBrains.Annotations;
 using Remora.Results;
 using Tafs.Activities.Finance.Extensions;
-using Tafs.Activities.Results.Extensions.Errors;
+using Vogen;
 
 namespace Tafs.Activities.Finance.Models
 {
@@ -36,22 +38,23 @@ namespace Tafs.Activities.Finance.Models
     /// </summary>
     [PublicAPI]
     [DebuggerDisplay($"{{{nameof(GetDebuggerDisplay)}(),nq}}")]
-    public readonly struct SocialSecurityNumber : IFormattable, IEquatable<SocialSecurityNumber>
+    [ValueObject<string>]
+    public readonly partial struct SocialSecurityNumber : IEquatable<SocialSecurityNumber>
     {
-        /// <summary>
-        /// Gets the first three digits of the SSN. Formerly used to denote geographic location.
-        /// </summary>
-        public readonly short AreaNumber;
+        private const string SsnRegexDefinition = @"^(?<area>\d{3})(?<separator>[ -]?)(?<group>\d{2})\2(?<serial>\d{4})$";
 
-        /// <summary>
-        /// Gets the digits in position 4 and 5 of the SSN.
-        /// </summary>
-        public readonly byte GroupNumber;
+#if NET7_0_OR_GREATER
+        [GeneratedRegex(SsnRegexDefinition, RegexOptions.Compiled)]
+        private static partial Regex SsnRegex();
+#else
+        private static readonly Regex _ssnRegex = new(SsnRegexDefinition, RegexOptions.Compiled);
 
-        /// <summary>
-        /// Gets a number which is incremented for each issued SSN.
-        /// </summary>
-        public readonly short SerialNumber;
+        private static Regex SsnRegex() => _ssnRegex;
+#endif
+
+        /// <inheritdoc cref="Zero"/>
+        [Obsolete("Use Zero")]
+        public static readonly SocialSecurityNumber Default = Zero;
 
         /// <summary>
         /// Gets a default <see cref="SocialSecurityNumber"/> of 000-00-0000.
@@ -59,110 +62,27 @@ namespace Tafs.Activities.Finance.Models
         /// <remarks>
         /// This social security number is invalid.
         /// </remarks>
-        public static SocialSecurityNumber Default { get; } = default;
+        public static readonly SocialSecurityNumber Zero = new("000-00-0000");
 
         /// <summary>
         /// Gets a <see cref="SocialSecurityNumber"/> used as a sample for advertisements and documentation by the Social Security Administration.
         /// </summary>
         /// <remarks>219-09-9999.</remarks>
-        public static SocialSecurityNumber SampleNumber { get; } = new SocialSecurityNumber(219, 09, 9999);
+        public static readonly SocialSecurityNumber SampleNumber = new("219-09-9999");
+
+        /// <inheritdoc cref="WoolsworthNumber"/>
+        [Obsolete("Use Woolsworth Number")]
+        public static readonly SocialSecurityNumber WoolsworthSSN = WoolsworthNumber;
 
         /// <summary>
         /// Gets a decommissioned <see cref="SocialSecurityNumber"/> once issued to an employee of Woolsworth Wallets.
         /// </summary>
         /// <remarks>078-05-1120.</remarks>
         /// <seealso href="https://www.ssa.gov/history/ssn/misused.html"/>
-        public static SocialSecurityNumber WoolsworthSSN { get; } = new SocialSecurityNumber(078, 05, 1120);
+        public static readonly SocialSecurityNumber WoolsworthNumber = new("078-05-1120");
 
-        private SocialSecurityNumber(short areaNumber, byte groupNumber, short serialNumber)
-        {
-            AreaNumber = areaNumber;
-            GroupNumber = groupNumber;
-            SerialNumber = serialNumber;
-        }
-
-        /// <inheritdoc cref="FromString(string)"/>
-        /// <returns>The parsed SocialSecurityNumber.</returns>
-        /// <exception cref="ArgumentException">Thrown when a parse error occurs.</exception>
-        public static SocialSecurityNumber Parse(string ssn)
-        {
-            Result<SocialSecurityNumber> parseResult = FromString(ssn);
-
-            return parseResult.IsDefined(out var parsedNumber)
-                ? parsedNumber
-                : throw new ArgumentException(parseResult.Error!.Message, nameof(ssn));
-        }
-
-        /// <summary>
-        /// Attempts to parse the provided string into an instance of <see cref="SocialSecurityNumber"/>.
-        /// </summary>
-        /// <param name="ssn">The social security number to validate.</param>
-        /// <param name="result">The parsed <see cref="SocialSecurityNumber"/>.</param>
-        /// <returns><see langword="true" /> if the parse succeeded; otherwise, <see langword="false" />.</returns>
-        public static bool TryParse(string ssn, out SocialSecurityNumber result)
-        {
-            return FromString(ssn).IsDefined(out result);
-        }
-
-        /// <summary>
-        /// Attempts to parse the provided string into an instance of <see cref="SocialSecurityNumber"/>.
-        /// </summary>
-        /// <param name="ssn">The social security number to validate.</param>
-        /// <returns>A <see cref="Result{TEntity}"/> containing the <see cref="SocialSecurityNumber"/> or a failure result.</returns>
-        public static Result<SocialSecurityNumber> FromString(string ssn)
-        {
-            if (string.IsNullOrWhiteSpace(ssn))
-            {
-                return new ArgumentNullError(nameof(ssn));
-            }
-
-            // Clean formatting
-            ssn = ssn.Trim();
-            ssn = ssn.Replace("-", string.Empty).Replace(" ", string.Empty);
-
-            // Ensure length
-            if (ssn.Length > 9)
-            {
-                return new ArgumentOutOfRangeError(nameof(ssn), "Provided value was longer than 9 characters.");
-            }
-
-            if (ssn.Length < 9)
-            {
-                return new ArgumentOutOfRangeError(nameof(ssn), "Provided value was shorter than 9 characters.");
-            }
-
-            bool allNumbers = Array.TrueForAll(ssn.ToCharArray(), "0123456789".Contains);
-            if (!allNumbers)
-            {
-                return new ArgumentInvalidError(nameof(ssn), $"Social Security Numbers may only consist of the numbers [0-9], hyphens, and spaces.");
-            }
-
-            short areaNumber = (short)(
-                (short.Parse(ssn[0].ToString()) * 100) +
-                (short.Parse(ssn[1].ToString()) * 10) +
-                short.Parse(ssn[2].ToString())
-            );
-
-            byte groupNumber = (byte)(
-                (byte.Parse(ssn[3].ToString()) * 10) +
-                byte.Parse(ssn[4].ToString())
-            );
-
-            short serialNumber = (short)(
-                (short.Parse(ssn[5].ToString()) * 1000) +
-                (short.Parse(ssn[6].ToString()) * 100) +
-                (short.Parse(ssn[7].ToString()) * 10) +
-                short.Parse(ssn[8].ToString())
-            );
-
-            var number = new SocialSecurityNumber(areaNumber, groupNumber, serialNumber);
-
-            var validationResult = Validate(number);
-
-            return validationResult.IsSuccess
-                ? number
-                : Result<SocialSecurityNumber>.FromError(validationResult);
-        }
+        private static string NormalizeInput(string input)
+            => input.Trim();
 
         /// <summary>
         /// Validates a Social Security Number to ensure none of the following are met:
@@ -170,96 +90,106 @@ namespace Tafs.Activities.Finance.Models
         ///     <item>Contains all zeroes in any specific group (000-##-####, ###-00-####, or ###-##-0000).</item>
         ///     <item>Begins with '666'.</item>
         ///     <item>Begins with any value from '900-999'.</item>
-        ///     <item>Matches <see cref="WoolsworthSSN"/>.</item>
-        ///     <item>Matches <see cref="SampleNumber"/>.</item>
         /// </list>
         /// </summary>
-        /// <param name="ssn">The <see cref="SocialSecurityNumber"/> to validate.</param>
+        /// <param name="input">The Social Security Number to validate.</param>
         /// <returns>A result indicating whether the validation succeeded.</returns>
-        public static Result Validate(SocialSecurityNumber ssn)
+        private static Validation Validate(string input)
         {
-            // Default values
-            if (ssn.AreaNumber == Default.AreaNumber)
+            var match = SsnRegex().Match(input);
+            if (match.Success)
             {
-                return new ValidationError("The area number cannot be '000'.");
+                var area = int.Parse(match.Groups["area"].Value);
+                var group = int.Parse(match.Groups["group"].Value);
+                var serial = int.Parse(match.Groups["serial"].Value);
+
+                // Not all zeroes
+                if (area == 0)
+                {
+                    return Validation.Invalid("The area number cannot equal '000'");
+                }
+
+                if (group == 0)
+                {
+                    return Validation.Invalid("The group number cannot equal '00'");
+                }
+
+                if (serial == 0)
+                {
+                    return Validation.Invalid("The serial number cannot equal '0000'");
+                }
+
+                // Range validation
+                if (area == 666)
+                {
+                    return Validation.Invalid("The area number cannot equal '666'");
+                }
+
+                if (area is >= 900 and <= 999)
+                {
+                    return Validation.Invalid("Area number cannot be between 900 and 999 (inclusive)");
+                }
+
+                return Validation.Ok;
             }
 
-            if (ssn.GroupNumber == Default.GroupNumber)
-            {
-                return new ValidationError("The group number cannot be '00'.");
-            }
-
-            if (ssn.SerialNumber == Default.SerialNumber)
-            {
-                return new ValidationError("The serial number cannot be '0000'");
-            }
-
-            // Starts with invalid numbers.
-            if (ssn.AreaNumber == 666)
-            {
-                return new ValidationError("The area number cannot be '666'.");
-            }
-
-            if (ssn.AreaNumber is >= 900 and <= 999)
-            {
-                return new ValidationError($"The area number must be between [900..999] inclusive. Provided: '{ssn.AreaNumber}'.");
-            }
-
-            // Equals either invalidated number.
-            if (ssn.Equals(WoolsworthSSN))
-            {
-                return new ValidationError($"The Social Security Number '{WoolsworthSSN}' has been retired from service.");
-            }
-
-            if (ssn.Equals(SampleNumber))
-            {
-                return new ValidationError($"The Social Security Number '{SampleNumber}' is for documentation purposes only.");
-            }
-
-            // It passed all tests.
-            return Result.FromSuccess();
+            return Validation.Invalid("Input string must consist of only numbers 0-9 and optional hyphens and spaces between sections.");
         }
 
+        /// <inheritdoc cref="TryParseResult(string)"/>
+        /// <param name="ssn">The social security number to validate.</param>
+        /// <param name="validate">Unused. Value is ignored.</param>
+        [Obsolete("Use version without boolean.")]
+        public static Result<SocialSecurityNumber> TryParseResult(string ssn, bool validate)
+            => TryParseResult(ssn);
+
+        /// <summary>
+        /// Attempts to parse the provided string into an instance of <see cref="SocialSecurityNumber"/>.
+        /// </summary>
+        /// <param name="ssn">The social security number to validate.</param>
+        /// <returns>A <see cref="Result{TEntity}"/> containing the <see cref="SocialSecurityNumber"/> or a failure result.</returns>
+        public static Result<SocialSecurityNumber> TryParseResult(string ssn)
+            => TryFrom(ssn).AsResult();
+
+        /// <summary>
+        /// Gets this <see cref="SocialSecurityNumber"/> as an int array.
+        /// </summary>
+        /// <returns>This <see cref="SocialSecurityNumber"/> as an array.</returns>
+        public int[] AsIntArray()
+        {
+#if NET7_0_OR_GREATER
+            return AsArray<int>();
+#else
+            var number = new int[9];
+            for (int i = 0; i < Value.Length; i++)
+            {
+                number[i] = (int)char.GetNumericValue(Value[i]);
+            }
+
+            return number;
+#endif
+        }
+
+#if NET7_0_OR_GREATER
         /// <summary>
         /// Gets this <see cref="SocialSecurityNumber"/> as an array.
         /// </summary>
+        /// <typeparam name="TNumber">The numeric type to convert into.</typeparam>
         /// <returns>This <see cref="SocialSecurityNumber"/> as an array.</returns>
-        public int[] AsArray()
+        /// <exception cref="OverflowException">Thrown when <typeparamref name="TNumber"/> cannot represent the requested value.</exception>
+        public TNumber[] AsArray<TNumber>()
+            where TNumber : INumber<TNumber>
         {
-            static void Subdivide(short value, int[] number, int count)
+            string value = ToString("U");
+            var number = new TNumber[9];
+            for (int i = 0; i < 9; i++)
             {
-                if (value == 0)
-                {
-                    return;
-                }
-
-                for (short x = value; x > 0; x /= 10)
-                {
-                    number[count--] = x % 10;
-                }
-
-                return;
+                number[i] = TNumber.CreateChecked(char.GetNumericValue(value[i]));
             }
-
-            var number = new int[9];
-            Subdivide(SerialNumber, number, count: 8);
-            Subdivide(GroupNumber, number, count: 4);
-            Subdivide(AreaNumber, number, count: 2);
 
             return number;
         }
-
-        /// <inheritdoc/>
-        public override bool Equals(object? obj)
-            => obj is SocialSecurityNumber ssn && Equals(ssn);
-
-        /// <summary>
-        /// Compares this instance with another instance of <see cref="SocialSecurityNumber" /> for equality.
-        /// </summary>
-        /// <param name="other">The instance to compare this one with.</param>
-        /// <returns>True if the operands are not equal; otherwise, false.</returns>
-        public bool Equals(SocialSecurityNumber other)
-            => AreaNumber == other.AreaNumber && GroupNumber == other.GroupNumber && SerialNumber == other.SerialNumber;
+#endif
 
         /// <summary>
         /// Returns a string representation of this <see cref="SocialSecurityNumber"/> in General (hyphenated) format.
@@ -278,6 +208,10 @@ namespace Tafs.Activities.Finance.Models
         ///     <item>
         ///         <term>G</term>
         ///         <description>General. Returns a hyphenated format. <c>219-09-9999</c>.</description>
+        ///     </item>
+        ///     <item>
+        ///         <term>S</term>
+        ///         <description>Space. Returns a spaced format. <c>219 09 9999</c>,</description>
         ///     </item>
         ///     <item>
         ///         <term>H</term>
@@ -312,41 +246,37 @@ namespace Tafs.Activities.Finance.Models
                 format = "G";
             }
 
+            var match = SsnRegex().Match(_value);
+            var areaNumber = match.Groups["area"].Value;
+            var groupNumber = match.Groups["group"].Value;
+            var serialNumber = match.Groups["serial"].Value;
+
             return format?.ToUpperInvariant() switch
             {
-                "G" or "H" => $"{AreaNumber:D3}-{GroupNumber:D2}-{SerialNumber:D4}",
-                "U" => $"{AreaNumber:D3}{GroupNumber:D2}{SerialNumber:D4}",
-                "M" => $"***-**-{SerialNumber:D4}",
-                "N" => $"*****{SerialNumber:D4}",
+                "G" or "H" => $"{areaNumber}-{groupNumber}-{serialNumber}",
+                "S" => $"{areaNumber} {groupNumber} {serialNumber}",
+                "U" => $"{areaNumber}{groupNumber}{serialNumber}",
+                "M" => $"***-**-{serialNumber}",
+                "N" => $"*****{serialNumber}",
                 _ => throw new FormatException($"The selected '{format}' format is not not supported."),
             };
         }
 
-        /// <summary>
-        /// Compares two instances of <see cref="SocialSecurityNumber" /> for equality.
-        /// </summary>
-        /// <param name="left">The left operand.</param>
-        /// <param name="right">The right operand.</param>
-        /// <returns>True if the operands are equal; otherwise, false.</returns>
-        public static bool operator ==(SocialSecurityNumber left, SocialSecurityNumber right)
-            => left.Equals(right);
-
-        /// <summary>
-        /// Compares two instances of <see cref="SocialSecurityNumber" /> for inequality.
-        /// </summary>
-        /// <param name="left">The left operand.</param>
-        /// <param name="right">The right operand.</param>
-        /// <returns>True if the operands are not equal; otherwise, false.</returns>
-        public static bool operator !=(SocialSecurityNumber left, SocialSecurityNumber right)
-            => !left.Equals(right);
-
-        /// <inheritdoc/>
-        public override int GetHashCode()
-            => HashCode.Combine(AreaNumber, GroupNumber, SerialNumber);
-
         private string GetDebuggerDisplay()
         {
             return ToString();
+        }
+
+        /// <inheritdoc/>
+        public bool Equals(SocialSecurityNumber other)
+        {
+            return AsIntArray().SequenceEqual(other.AsIntArray());
+        }
+
+        /// <inheritdoc/>
+        public override int GetHashCode()
+        {
+            return ToString("U").GetHashCode();
         }
     }
 }
