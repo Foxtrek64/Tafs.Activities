@@ -5,9 +5,9 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <VersionPrefix>0.2.1</VersionPrefix>
+    <VersionPrefix>0.2.2</VersionPrefix>
     <ProjectDescription>Provides a set of models and helper libraries for interfacing with the TAFS API.</ProjectDescription>
-    <PackageReleaseNotes>Remove net461 target.</PackageReleaseNotes>
+    <PackageReleaseNotes>Remove statically linked Remora.Rest dependencies.</PackageReleaseNotes>
     <PackageTags>$(PackageTags);Tafs-API</PackageTags>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
